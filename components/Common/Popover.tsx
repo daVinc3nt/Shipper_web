@@ -2,6 +2,7 @@ import React, { ReactNode } from "react";
 import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
 import { Button } from "@nextui-org/react";
+import { FormattedMessage } from "react-intl";
 interface Props {
   children: ReactNode;
   icon: any;
@@ -33,7 +34,7 @@ export default function BasicPopover({ children, icon = null }: Props) {
         onClick={handleClick}
       >
         {icon}
-        Filter
+        <FormattedMessage id="Filter" />
       </Button>
       <Popover
         id={id}

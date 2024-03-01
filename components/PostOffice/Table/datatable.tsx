@@ -29,7 +29,7 @@ import {
   DropdownItem,
   Button,
 } from "@nextui-org/react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import BasicPopover from "@/components/Common/Popover";
 import Filter from "@/components/Common/Filters";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
@@ -106,10 +106,10 @@ export function DataTable<TData, TValue>({
               id="postSearch"
               type="date"
               value={
-                (table.getColumn("postName")?.getFilterValue() as string) ?? ""
+                (table.getColumn("postRate")?.getFilterValue() as string) ?? ""
               }
               onChange={(event) =>
-                table.getColumn("postName")?.setFilterValue(event.target.value)
+                table.getColumn("postRate")?.setFilterValue(event.target.value)
               }
               className={`peer h-10 self-center w-full border border-gray-600 rounded focus:outline-none focus:border-blue-500 truncate bg-transparent
                     text-left placeholder-transparent pl-3 pt-2 pr-12 text-sm text-white`}
@@ -121,15 +121,18 @@ export function DataTable<TData, TValue>({
                     peer-placeholder-shown:text-sm peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-2.5 
                     peer-focus:-top-0.5 peer-focus:leading-5 peer-focus:text-blue-500 peer-focus:text-xxs`}
             >
-              Tìm kiếm theo ngày giao thành công
+              <FormattedMessage id="History.Search" />
             </label>
             <Dropdown className="z-30">
               <DropdownTrigger>
                 <Button
-                  className="text-xs md:text-base border border-gray-600 rounded ml-2 w-24 text-center"
+                  className="text-xxs md:text-base border border-gray-600 rounded ml-2 w-48 text-center"
                   aria-label="Show items per page"
                 >
-                  Show {table.getState().pagination.pageSize}
+                  <span className="text-sm">
+                    <FormattedMessage id="Show" />{" "}
+                    {table.getState().pagination.pageSize}
+                  </span>
                 </Button>
               </DropdownTrigger>
               <DropdownMenu
@@ -147,7 +150,7 @@ export function DataTable<TData, TValue>({
                       aria-label={`Show ${pageSize}`}
                       className="text-center  text-white w-full"
                     >
-                      Show {pageSize}
+                      <FormattedMessage id="Show" /> {pageSize}
                     </Button>
                   </DropdownItem>
                 ))}
@@ -239,7 +242,8 @@ export function DataTable<TData, TValue>({
           }`}
           onClick={deleteRows}
         >
-          Xóa {table.getFilteredSelectedRowModel().rows.length}/
+          <FormattedMessage id="Delete" />{" "}
+          {table.getFilteredSelectedRowModel().rows.length}/
           {table.getFilteredRowModel().rows.length}
         </button>
         <Button
@@ -252,18 +256,22 @@ export function DataTable<TData, TValue>({
           hover:shadow-md md:text-base focus:outline-none font-normal
           text-white rounded-md text-sm text-center me-2"
         >
-          <span>Prev</span>
+          <span>
+            <FormattedMessage id="Prev" />
+          </span>
         </Button>
         <span className="flex items-center gap-1">
-          <div className="text-xs md:text-base">Page</div>
+          <div className="text-xs md:text-base">
+            <FormattedMessage id="Page" />
+          </div>
           <strong className="text-xs md:text-base whitespace-nowrap">
-            {table.getState().pagination.pageIndex + 1} of{" "}
-            {table.getPageCount()}
+            {table.getState().pagination.pageIndex + 1}{" "}
+            <FormattedMessage id="of" /> {table.getPageCount()}
           </strong>
         </span>
         <TbMinusVertical className="text-xl text-gray-700" />
         <span className="flex items-center gap-1 text-xs md:text-base whitespace-nowrap">
-          Go to page:
+          <FormattedMessage id="Go to page" />:
           <input
             type="number"
             defaultValue={table.getState().pagination.pageIndex + 1}
@@ -284,7 +292,9 @@ export function DataTable<TData, TValue>({
           hover:shadow-md md:text-base focus:outline-none font-normal
           text-white rounded-md text-sm text-center me-2"
         >
-          <span>Next</span>
+          <span>
+            <FormattedMessage id="Next" />
+          </span>
         </Button>
       </div>
     </div>

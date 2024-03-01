@@ -1,1 +1,15 @@
-{}
+{
+    "Show": "Hiển thị",
+    "Filter": "Lọc",
+    "Delete": "Xóa",
+    "Edit": "Sửa",
+    "Prev": "Trước",
+    "Next": "Sau",
+    "Go to page": "Đi đến trang",
+    "Page": "Trang",
+    "of": "trên",
+
+    "History.Title": "Lịch sử đơn hàng",
+    "History.Search": "Tìm kiếm theo ngày giao thành công"
+    
+}
