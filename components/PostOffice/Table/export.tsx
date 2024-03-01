@@ -1,8 +1,8 @@
-import { PostOffice, columns } from "./column";
+import { History, columns } from "./column";
 import { DataTable } from "./datatable";
 import https from "https";
 
-async function getData(): Promise<PostOffice[]> {
+async function getData(): Promise<History[]> {
   // Fetch data from your API here.
 
   const res = await fetch(

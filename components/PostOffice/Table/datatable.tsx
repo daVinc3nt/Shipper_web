@@ -1,8 +1,6 @@
 "use client";
 import React from "react";
 import { TbMinusVertical } from "react-icons/tb";
-import { useState } from "react";
-import AddOffice from "./AddOffice/addoffice";
 import {
   ColumnDef,
   SortingState,
@@ -14,7 +12,7 @@ import {
   getSortedRowModel,
   getFilteredRowModel,
 } from "@tanstack/react-table";
-import { Input } from "./input";
+
 import {
   Table,
   TableBody,
@@ -22,7 +20,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "./table";
+} from "@/components/TableUI/table";
 
 import {
   Dropdown,
@@ -32,7 +30,9 @@ import {
   Button,
 } from "@nextui-org/react";
 import { FormattedMessage } from "react-intl";
-
+import BasicPopover from "@/components/Common/Popover";
+import Filter from "@/components/Common/Filters";
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
@@ -63,15 +63,7 @@ export function DataTable<TData, TValue>({
       rowSelection,
     },
   });
-  const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  const openModal = () => {
-    setModalIsOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalIsOpen(false);
-  };
   const paginationButtons = [];
   for (let i = 0; i < table.getPageCount(); i++) {
     paginationButtons.push(
@@ -112,7 +104,7 @@ export function DataTable<TData, TValue>({
           <div className="relative w-full sm:w-1/2 lg:w-1/3 flex">
             <input
               id="postSearch"
-              type="text"
+              type="date"
               value={
                 (table.getColumn("postName")?.getFilterValue() as string) ?? ""
               }
@@ -129,7 +121,7 @@ export function DataTable<TData, TValue>({
                     peer-placeholder-shown:text-sm peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-2.5 
                     peer-focus:-top-0.5 peer-focus:leading-5 peer-focus:text-blue-500 peer-focus:text-xxs`}
             >
-              Tìm kiếm theo tên bưu cục
+              Tìm kiếm theo ngày giao thành công
             </label>
             <Dropdown className="z-30">
               <DropdownTrigger>
@@ -161,15 +153,26 @@ export function DataTable<TData, TValue>({
                 ))}
               </DropdownMenu>
             </Dropdown>
-          </div>
-          <div className="flex-grow h-10 flex mt-4 sm:mt-0 justify-center sm:justify-end">
-            <Button
-              className="text-xs md:text-sm border border-gray-600 rounded sm:ml-2 w-full sm:w-32 text-center h-full"
-              onClick={openModal}
-            >
-              Thêm Bưu cục
-            </Button>
-            {modalIsOpen && <AddOffice onClose={closeModal} />}
+            <BasicPopover icon={<FilterAltIcon />}>
+              <Filter
+                type="search"
+                column={table.getColumn("postRate")}
+                table={table}
+                title="Tên kiện hàng"
+              />
+              <Filter
+                type="search"
+                column={table.getColumn("postRate")}
+                table={table}
+                title="Tên người nhận"
+              />
+              <Filter
+                type="search"
+                column={table.getColumn("postRate")}
+                table={table}
+                title="Giá trị đơn hàng"
+              />
+            </BasicPopover>
           </div>
         </div>
       </div>

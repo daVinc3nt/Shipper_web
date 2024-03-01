@@ -4,12 +4,10 @@ import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Button } from "@nextui-org/react";
 import React, { useState, useEffect } from "react";
-import Modal from "react-modal";
-import { LogoIcon, UsersIcon } from "@/components/Icons";
 import DetailPost from "./detailPost";
 import { Checkbox } from "@/components/TableUI/checkbox";
 import { FormattedMessage } from "react-intl";
-export type PostOffice = {
+export type History = {
   number: string;
   postName: string;
   postMail: string;
@@ -21,7 +19,7 @@ export type PostOffice = {
   postBankName: string;
 };
 
-export const columns: ColumnDef<PostOffice>[] = [
+export const columns: ColumnDef<History>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -52,7 +50,7 @@ export const columns: ColumnDef<PostOffice>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          <FormattedMessage id="Number" />
+          STT
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -67,7 +65,7 @@ export const columns: ColumnDef<PostOffice>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Tên bưu cục
+          Tên kiện hàng
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -81,7 +79,7 @@ export const columns: ColumnDef<PostOffice>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Email
+          Tên người nhận
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -96,7 +94,7 @@ export const columns: ColumnDef<PostOffice>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Doanh thu
+          Tên người gửi
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -110,7 +108,35 @@ export const columns: ColumnDef<PostOffice>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Tỉ lệ
+          Ngày gửi
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+  },
+  {
+    accessorKey: "postRate",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Ngày giao
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+  },
+  {
+    accessorKey: "postRate",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Giá trị đơn hàng
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );

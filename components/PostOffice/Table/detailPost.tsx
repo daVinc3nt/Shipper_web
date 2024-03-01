@@ -5,7 +5,7 @@ import { Button } from "@nextui-org/react";
 import { FaTrash, FaPen } from "react-icons/fa";
 import { User, Pencil } from "lucide-react";
 import { FormattedMessage } from "react-intl";
-interface Postdetail {
+interface History {
   number: string;
   postName: string;
   postMail: string;
@@ -17,12 +17,15 @@ interface Postdetail {
   postBankName: string;
 }
 
-interface DetailStaffProps {
+interface DetailHistoryProps {
   onClose: () => void;
-  dataInitial: Postdetail;
+  dataInitial: History;
 }
 
-const DetailPost: React.FC<DetailStaffProps> = ({ onClose, dataInitial }) => {
+const DetailHistory: React.FC<DetailHistoryProps> = ({
+  onClose,
+  dataInitial,
+}) => {
   const [isShaking, setIsShaking] = useState(false);
   const notificationRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(true);
@@ -256,4 +259,4 @@ const DetailPost: React.FC<DetailStaffProps> = ({ onClose, dataInitial }) => {
   );
 };
 
-export default DetailPost;
+export default DetailHistory;
