@@ -72,6 +72,21 @@ export const columns: ColumnDef<History>[] = [
     },
   },
   {
+    accessorKey: "postName",
+
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Mã đơn hàng
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+  },
+  {
     accessorKey: "postMail",
     header: ({ column }) => {
       return (
@@ -145,7 +160,7 @@ export const columns: ColumnDef<History>[] = [
   {
     accessorKey: "Chi tiết",
     header: () => {
-      return <FormattedMessage id="Detail" />;
+      return <FormattedMessage id="Detail/Edit" />;
     },
     cell: ({ row }) => {
       const [modalIsOpen, setModalIsOpen] = useState(false);

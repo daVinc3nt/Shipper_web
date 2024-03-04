@@ -93,7 +93,7 @@ const DetailHistory: React.FC<DetailHistoryProps> = ({
       >
         <div className="relative items-center justify-center flex-col flex h-10 w-full border-b-2 border-[#545e7b]">
           <div className="font-bold text-lg sm:text-2xl pb-2 text-white w-full text-center">
-            Thông tin bưu cục-đại lý
+            Thông tin đơn hàng
           </div>
           <Button
             className="absolute right-0 w-8 h-8 rounded-full mb-2 hover:bg-gray-300"
@@ -103,127 +103,73 @@ const DetailHistory: React.FC<DetailHistoryProps> = ({
           </Button>
         </div>
         <div className="h-screen_3/5 overflow-y-scroll border border-[#545e7b] mt-4 no-scrollbar  bg-[#14141a] p-2 rounded-md text-white place-content-center">
-          <div className="grid grid-cols-2">
+          <div className="grid grid-cols-2 gap-3">
             <div className="flex gap-5">
-              <div className="font-bold text-base">Tên bưu cục-đại lý:</div>
-              {isEditing ? (
-                <input
-                  className="w-1/2 bg-transparent border-b-2 border-[#545e7b] text-white"
-                  type="text"
-                  value={data.postName}
-                  onChange={(e) =>
-                    setData({ ...data, postName: e.target.value })
-                  }
-                />
-              ) : (
-                <div>{data.postName}</div>
-              )}
+              <div className="font-bold text-base">Mã đơn hàng:</div>
+
+              <div>{data.postName}</div>
             </div>
             <div className="flex gap-5">
-              <div className="font-bold text-base">Số điện thoại:</div>
-              {isEditing ? (
-                <input
-                  className="w-1/2 bg-transparent border-b-2 border-[#545e7b] text-white"
-                  type="text"
-                  value={data.postPhone}
-                  onChange={(e) =>
-                    setData({ ...data, postPhone: e.target.value })
-                  }
-                />
-              ) : (
-                <div>{data.postPhone}</div>
-              )}
+              <div className="font-bold text-base">Tên đơn hàng:</div>
+
+              <div>{data.postName}</div>
             </div>
             <div className="flex gap-5">
-              <div className="font-bold text-base">Email:</div>
-              {isEditing ? (
-                <input
-                  className="w-1/2 bg-transparent border-b-2 border-[#545e7b] text-white"
-                  type="text"
-                  value={data.postMail}
-                  onChange={(e) =>
-                    setData({ ...data, postMail: e.target.value })
-                  }
-                />
-              ) : (
-                <div>{data.postMail}</div>
-              )}
+              <div className="font-bold text-base">
+                Số điện thoại người nhận:
+              </div>
+
+              <div>{data.postPhone}</div>
             </div>
             <div className="flex gap-5">
-              <div className="font-bold text-base">Địa chỉ:</div>
-              {isEditing ? (
-                <input
-                  className="w-1/2 bg-transparent border-b-2 border-[#545e7b] text-white"
-                  type="text"
-                  value={data.postAddress}
-                  onChange={(e) =>
-                    setData({ ...data, postAddress: e.target.value })
-                  }
-                />
-              ) : (
-                <div>{data.postAddress}</div>
-              )}
+              <div className="font-bold text-base">Tên người nhận:</div>
+
+              <div>{data.postMail}</div>
             </div>
             <div className="flex gap-5">
-              <div className="font-bold text-base">Doanh thu:</div>
-              {isEditing ? (
-                <input
-                  className="w-1/2 bg-transparent border-b-2 border-[#545e7b] text-white"
-                  type="text"
-                  value={data.postIncome}
-                  onChange={(e) =>
-                    setData({ ...data, postIncome: e.target.value })
-                  }
-                />
-              ) : (
-                <div>{data.postIncome}</div>
-              )}
+              <div className="font-bold text-base">
+                Số điện thoại người giao:
+              </div>
+
+              <div>{data.postPhone}</div>
             </div>
             <div className="flex gap-5">
-              <div className="font-bold text-base">Tỉ lệ hoa hồng:</div>
-              {isEditing ? (
-                <input
-                  className="w-1/2 bg-transparent border-b-2 border-[#545e7b] text-white"
-                  type="text"
-                  value={data.postRate}
-                  onChange={(e) =>
-                    setData({ ...data, postRate: e.target.value })
-                  }
-                />
-              ) : (
-                <div>{data.postRate}</div>
-              )}
+              <div className="font-bold text-base">Tên người giao:</div>
+
+              <div>{data.postMail}</div>
             </div>
             <div className="flex gap-5">
-              <div className="font-bold text-base">Tên ngân hàng:</div>
-              {isEditing ? (
-                <input
-                  className="w-1/2 bg-transparent border-b-2 border-[#545e7b] text-white"
-                  type="text"
-                  value={data.postBankName}
-                  onChange={(e) =>
-                    setData({ ...data, postBankName: e.target.value })
-                  }
-                />
-              ) : (
-                <div>{data.postBankName}</div>
-              )}
+              <div className="font-bold text-base">Địa chỉ người giao:</div>
+
+              <div>{data.postAddress}</div>
             </div>
             <div className="flex gap-5">
-              <div className="font-bold text-base">Số tài khoản:</div>
-              {isEditing ? (
-                <input
-                  className="w-1/2 bg-transparent border-b-2 border-[#545e7b] text-white"
-                  type="text"
-                  value={data.postBankAccount}
-                  onChange={(e) =>
-                    setData({ ...data, postBankAccount: e.target.value })
-                  }
-                />
-              ) : (
-                <div>{data.postBankAccount}</div>
-              )}
+              <div className="font-bold text-base">Địa chỉ người nhận:</div>
+
+              <div>{data.postAddress}</div>
             </div>
+            <div className="flex gap-5">
+              <div className="font-bold text-base">Ngày gửi hàng:</div>
+
+              <div>{data.postAddress}</div>
+            </div>
+            <div className="flex gap-5">
+              <div className="font-bold text-base">Ngày giao hàng:</div>
+
+              <div>{data.postAddress}</div>
+            </div>
+            <div className="flex gap-5">
+              <div className="font-bold text-base">Giá trị đơn hàng :</div>
+
+              <div>{data.postAddress}</div>
+            </div>
+          </div>
+          <div className="flex flex-col place-content-center gap-5 mt-5">
+            <div className="text-center font-bold text-xl">
+              Hình ảnh đơn hàng{" "}
+            </div>
+
+            <div className="">null</div>
           </div>
         </div>
 

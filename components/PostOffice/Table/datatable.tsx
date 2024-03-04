@@ -101,7 +101,7 @@ export function DataTable<TData, TValue>({
     <div>
       <div className="flex items-center py-4">
         <div className="w-full flex flex-col sm:flex-row">
-          <div className="relative w-full sm:w-1/2 lg:w-1/3 flex">
+          <div className="relative w-full sm:w-1/2 flex">
             <input
               id="postSearch"
               type="date"
@@ -126,7 +126,7 @@ export function DataTable<TData, TValue>({
             <Dropdown className="z-30">
               <DropdownTrigger>
                 <Button
-                  className="text-xs md:text-base border border-gray-600 rounded ml-2 w-24 text-center"
+                  className="text-xs md:text-base border border-gray-600 rounded ml-2 w-24 sm:w-36 text-center"
                   aria-label="Show items per page"
                 >
                   Show {table.getState().pagination.pageSize}
@@ -239,7 +239,8 @@ export function DataTable<TData, TValue>({
           }`}
           onClick={deleteRows}
         >
-          Xóa {table.getFilteredSelectedRowModel().rows.length}/
+          <FormattedMessage id="Delete" />{" "}
+          {table.getFilteredSelectedRowModel().rows.length}/
           {table.getFilteredRowModel().rows.length}
         </button>
         <Button
@@ -252,18 +253,22 @@ export function DataTable<TData, TValue>({
           hover:shadow-md md:text-base focus:outline-none font-normal
           text-white rounded-md text-sm text-center me-2"
         >
-          <span>Prev</span>
+          <span>
+            <FormattedMessage id="Prev" />
+          </span>
         </Button>
         <span className="flex items-center gap-1">
-          <div className="text-xs md:text-base">Page</div>
+          <div className="text-xs md:text-base">
+            <FormattedMessage id="Page" />
+          </div>
           <strong className="text-xs md:text-base whitespace-nowrap">
-            {table.getState().pagination.pageIndex + 1} of{" "}
-            {table.getPageCount()}
+            {table.getState().pagination.pageIndex + 1}
+            <FormattedMessage id="of" /> {table.getPageCount()}
           </strong>
         </span>
         <TbMinusVertical className="text-xl text-gray-700" />
         <span className="flex items-center gap-1 text-xs md:text-base whitespace-nowrap">
-          Go to page:
+          <FormattedMessage id="Go to page" />:
           <input
             type="number"
             defaultValue={table.getState().pagination.pageIndex + 1}
@@ -284,7 +289,9 @@ export function DataTable<TData, TValue>({
           hover:shadow-md md:text-base focus:outline-none font-normal
           text-white rounded-md text-sm text-center me-2"
         >
-          <span>Next</span>
+          <span>
+            <FormattedMessage id="Next" />
+          </span>
         </Button>
       </div>
     </div>

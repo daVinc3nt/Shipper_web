@@ -1,1 +1,13 @@
-{}
+{
+    "Show": "Show",
+    "Filter": "Filter",
+    "Delete": "Delete",
+    "Edit": "Edit",
+    "Prev": "Prev",
+    "Next": "Next",
+    "Go to page": "Go to page",
+    "Page": "Page",
+
+    "History.Title": "Order History"
+    
+}
