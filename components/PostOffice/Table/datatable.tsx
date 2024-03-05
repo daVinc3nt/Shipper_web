@@ -101,7 +101,7 @@ export function DataTable<TData, TValue>({
     <div>
       <div className="flex items-center py-4">
         <div className="w-full flex flex-col sm:flex-row">
-          <div className="relative w-full sm:w-1/2 lg:w-1/3 flex">
+          <div className="relative w-full sm:w-1/2 flex">
             <input
               id="postSearch"
               type="date"
@@ -126,7 +126,7 @@ export function DataTable<TData, TValue>({
             <Dropdown className="z-30">
               <DropdownTrigger>
                 <Button
-                  className="text-xxs md:text-base border border-gray-600 rounded ml-2 w-48 text-center"
+                  className="text-xs md:text-base border border-gray-600 rounded ml-2 w-24 sm:w-36 text-center"
                   aria-label="Show items per page"
                 >
                   <span className="text-sm">
@@ -265,7 +265,7 @@ export function DataTable<TData, TValue>({
             <FormattedMessage id="Page" />
           </div>
           <strong className="text-xs md:text-base whitespace-nowrap">
-            {table.getState().pagination.pageIndex + 1}{" "}
+            {table.getState().pagination.pageIndex + 1}
             <FormattedMessage id="of" /> {table.getPageCount()}
           </strong>
         </span>
