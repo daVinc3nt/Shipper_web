@@ -11,6 +11,9 @@
     "Detail/Edit": "Chi tiết/Sửa",
 
     "History.Title": "Lịch sử đơn hàng",
-    "History.Search": "Tìm kiếm theo ngày giao thành công"
+    "History.Search": "Tìm kiếm theo ngày giao thành công",
+
+    "Sidebar.option1":"Giao nhận đơn",
+    "Sidebar.option2":"Lịch sử"
     
 }

@@ -8,6 +8,8 @@
     "Go to page": "Go to page",
     "Page": "Page",
 
-    "History.Title": "Order History"
-    
+    "History.Title": "Order History",
+
+    "Sidebar.option1":"Orders",
+    "Sidebar.option2":"History"
 }
