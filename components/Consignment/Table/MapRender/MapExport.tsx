@@ -5,9 +5,8 @@ import { FiZoomOut, FiZoomIn } from "react-icons/fi";
 import { SourceContext } from "@/context/SourceContext";
 import { DestinationContext } from "@/context/DestinationContext";
 import { MdOutlineMyLocation } from "react-icons/md";
-import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 
-const MapExport = ({type}) => {
+const MapExport = ({}) => {
   const { source, setSource } = useContext(SourceContext);
   const { destination, setDestination } = useContext(DestinationContext);
   const [center, setCenter] = useState({

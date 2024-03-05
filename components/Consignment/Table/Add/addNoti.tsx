@@ -4,7 +4,7 @@ import { IoMdClose } from "react-icons/io";
 import { Button } from "@nextui-org/react";
 import CustomDropdown from "../../../Common/dropdown";
 import { FaMapMarkedAlt } from "react-icons/fa";
-import MapNoti from "./MapRender/mapNoti";
+import MapNoti from "../MapRender/mapNoti";
 import { FormattedMessage, useIntl } from "react-intl";
 
 interface AddNotificationProps {
