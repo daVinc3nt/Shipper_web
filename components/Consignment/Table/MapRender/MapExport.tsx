@@ -6,7 +6,7 @@ import { SourceContext } from "@/context/SourceContext";
 import { DestinationContext } from "@/context/DestinationContext";
 import { MdOutlineMyLocation } from "react-icons/md";
 
-const MapExport = ({}) => {
+const MapExport = ({ }) => {
   const { source, setSource } = useContext(SourceContext);
   const { destination, setDestination } = useContext(DestinationContext);
   const [center, setCenter] = useState({
@@ -35,9 +35,9 @@ const MapExport = ({}) => {
     const a =
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
       Math.cos(point1.lat * (Math.PI / 180)) *
-        Math.cos(point2.lat * (Math.PI / 180)) *
-        Math.sin(dLng / 2) *
-        Math.sin(dLng / 2);
+      Math.cos(point2.lat * (Math.PI / 180)) *
+      Math.sin(dLng / 2) *
+      Math.sin(dLng / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return R * c;
   };
@@ -46,7 +46,7 @@ const MapExport = ({}) => {
     const map = mapRef.current?.state.map;
     if (map) {
       const projection = map.getProjection();
-      
+
       const getNewLng = (point, offsetX) => {
         const sourcePixel = projection.fromLatLngToPoint(point);
         return projection.fromPointToLatLng({
@@ -54,7 +54,7 @@ const MapExport = ({}) => {
           y: sourcePixel.y,
         }).lng();
       };
-      
+
       if (destination && !source) {
         map.setZoom(12);
         map.panTo({ lat: destination.lat, lng: getNewLng(destination, 0) });
@@ -74,7 +74,7 @@ const MapExport = ({}) => {
       }
     }
   }, [source, destination]);
-  
+
 
   const handleZoomIn = () => {
     const currentZoom = mapRef.current.state.map.getZoom();
@@ -127,40 +127,6 @@ const MapExport = ({}) => {
         )}
       </GoogleMap>
 
-      {/* <GooglePlacesAutocomplete
-        selectProps={{
-          id: "orderAddress",
-          onChange:(place)=>{
-                      getLatandLng(place, "source");
-                      setValue(place)
-                    },
-          value: value,
-          placeholder: "Nhập địa chỉ lấy hàng",
-          isClearable: true,
-          className: `peer h-12 self-center w-full border border-gray-300 focus:border-blue-300 rounded text-left pt-1 pr-10`,
-          components: {
-            DropdownIndicator: null,
-            LoadingIndicator: null,
-          },
-          styles: {
-            control: (provided, state) => ({
-              ...provided,
-              backgroundColor: "transparent",
-              border: "none",
-              boxShadow: state.isFocused ? "none" : provided.boxShadow,
-              "&:hover": {
-                border: "none"
-              }
-            }),
-            placeholder: (provided) => ({
-              ...provided,
-              color: "#4a5568",
-              fontSize: "0.875rem",
-            }),
-          },
-        }}
-      /> */}
-
       <div className="absolute bottom-1/2 translate-y-1/2 right-5 flex flex-col invisible xs:visible items-center">
         <motion.button
           whileHover={{ scale: 1.05 }}
@@ -177,7 +143,7 @@ const MapExport = ({}) => {
           transition={{ duration: 0.3 }}
           className="text-white text-2xl w-10 h-10 bg-[#14141a] p-1 rounded-full mt-2 outline outline-white flex justify-center items-center"
         >
-          <MdOutlineMyLocation className="w-7 h-7"/>
+          <MdOutlineMyLocation className="w-7 h-7" />
         </motion.button>
         <motion.button
           whileHover={{ scale: 1.05 }}

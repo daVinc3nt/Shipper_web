@@ -1,55 +1,25 @@
 import classNames from "classnames";
 import React, { useState, useEffect } from "react";
 import { CollapsIcon } from "../Icons";
-import { Variants } from "framer-motion";
 import { FormattedMessage, useIntl } from "react-intl";
 import MissionCard from "./MissionCard";
 import { Dropdown, DropdownTrigger, Button, DropdownMenu, DropdownItem } from "@nextui-org/react";
-import { HiDotsHorizontal } from "react-icons/hi";
+import fetchTask from "@/api/getTask";
 
 const Mission = ({ toggleCollapse, setToggleCollapse }) => {
   const [toggleCollapse2, setToggleCollapse2] = useState(false);
   const intl = useIntl();
   const [selectedOption, setSelectedOption] = useState("all");
 
-  const fakeData = [{
-    id: 1,
-    ordercode: 1,
-    mass: "200",
-    height: "3",
-    length: "2",
-    width: "1",
-    COD: "20000",
-    address: "89 Đường số 78, Tân Phú Trung",
-    lat: 10.944234428080987,
-    lng: 106.54064487280856,
-    state: 1
-  },
-  {
-    id: 2,
-    ordercode: 2,
-    mass: "300",
-    height: "4",
-    length: "4",
-    width: "2",
-    COD: "25000",
-    address: "138 Lê Văn Việt, Hiệp Phú",
-    lat: 10.84509735761741,
-    lng: 106.78011417388916,
-    state: 2
-  }, {
-    id: 3,
-    ordercode: 3,
-    mass: "200",
-    height: "3",
-    length: "2",
-    width: "1",
-    COD: "20000",
-    address: "89 Đường số 78, Tân Phú Trung",
-    lat: 10.944234428080987,
-    lng: 106.54064487280856,
-    state: 0
-  }]
+  const [data, setData] = useState(null)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await fetchTask(0);
+      setData(result);
+    };
+    fetchData();
+  }, []);
 
   const wrapperClasses = classNames(
     "relative bottom-0 px-4 pt-10 pb-4 ml-2 lg:ml-4  mt-2 lg:mt-4 bg-formBgColor-parent flex flex-col justify-between rounded-2xl z-20",
@@ -71,6 +41,7 @@ const Mission = ({ toggleCollapse, setToggleCollapse }) => {
   );
 
   const handleOrderFormToggle = () => {
+    fetchTask(0);
     setToggleCollapse(!toggleCollapse);
   };
 
@@ -102,7 +73,7 @@ const Mission = ({ toggleCollapse, setToggleCollapse }) => {
 
 
   return (
-    <div className="absolute top-0 h-full w-full">
+    <div className="absolute top-0 h-full w-full" key="mission">
       <div
         className={wrapperClasses}
         style={{
@@ -119,17 +90,17 @@ const Mission = ({ toggleCollapse, setToggleCollapse }) => {
               <CollapsIcon />
             </button>
             <Dropdown className={`z-30`}>
-              <DropdownTrigger key="button">
+              <DropdownTrigger>
                 <Button className={`absolute rounded-md border right-0 text-black -bottom-2 lg:-bottom-6 p-1 lg:p-3 min-w-[80px] ${!toggleCollapse && !toggleCollapse2 ? "block" : "hidden"}`} >
                   <span className="bg-white rounded-full font-normal">{intl.formatMessage({ id: `Mission.Filter${getFilterId(selectedOption)}` })}</span>
                 </Button>
               </DropdownTrigger>
               <DropdownMenu
-                key="menu"
                 className="bg-white border border-gray-300 no-scrollbar rounded-md w-full max-h-80 overflow-y-auto"
-                aria-labelledby="dropdownMenuButton"
+                aria-labelledby="dropdownMenuButton2"
+                key="dropdownMenuButton2"
               >
-                <DropdownItem key="all">
+                <DropdownItem key="filter_all" textValue="filter_all">
                   <Button
                     aria-label="dropdownItem1"
                     className={`text-center text-black w-full rounded-md px-2 ${selectedOption === "all" ? "bg-blue-500 text-white" : ""}`}
@@ -138,7 +109,7 @@ const Mission = ({ toggleCollapse, setToggleCollapse }) => {
                     <FormattedMessage id="Mission.Filter1" />
                   </Button>
                 </DropdownItem>
-                <DropdownItem key="today">
+                <DropdownItem key="filter_today" textValue="filter_today">
                   <Button
                     aria-label="dropdownItem2"
                     className={`text-center text-black w-full rounded-md px-2 ${selectedOption === "today" ? "bg-blue-500 text-white" : ""}`}
@@ -147,7 +118,7 @@ const Mission = ({ toggleCollapse, setToggleCollapse }) => {
                     <FormattedMessage id="Mission.Filter2" />
                   </Button>
                 </DropdownItem>
-                <DropdownItem key="this_week">
+                <DropdownItem key="filter_this_week" textValue="filter_this_week">
                   <Button
                     aria-label="dropdownItem3"
                     className={`text-center text-black w-full rounded-md px-2 ${selectedOption === "this_week" ? "bg-blue-500 text-white" : ""}`}
@@ -156,7 +127,7 @@ const Mission = ({ toggleCollapse, setToggleCollapse }) => {
                     <FormattedMessage id="Mission.Filter3" />
                   </Button>
                 </DropdownItem>
-                <DropdownItem key="this_month">
+                <DropdownItem key="filter_this_month" textValue="filter_this_month">
                   <Button
                     aria-label="dropdownItem4"
                     className={`text-center text-black w-full rounded-md px-2 ${selectedOption === "this_month" ? "bg-blue-500 text-white" : ""}`}
@@ -168,8 +139,8 @@ const Mission = ({ toggleCollapse, setToggleCollapse }) => {
               </DropdownMenu>
             </Dropdown>
           </div>
-          {!toggleCollapse && !toggleCollapse2 && <div className="flex flex-col gap-2 relative h-full w-full mt-4 lg:mt-8 border-2 border-gray-200 rounded-md p-2 bg-gray-100">
-            {fakeData.map(data => (<MissionCard data={data} toggle={handleOrderFormToggle} />))}
+          {!toggleCollapse && !toggleCollapse2 && <div key="listCard" className="flex flex-col gap-2 relative h-full w-full mt-4 lg:mt-8 border-2 border-gray-200 rounded-md p-2 bg-gray-100">
+            {data?.map((data, index) => (<MissionCard data={data} toggle={handleOrderFormToggle} keyName={`mission_card_${index}`} />))}
           </div>}
         </div>
       </div>

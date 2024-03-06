@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import OrderForm from "@/components/Mission/Mission";
+import Mission from "@/components/Mission/Mission";
 import MapExport from "@/components/MapRender/MapExport";
 import { useState, useEffect } from "react";
 import { SourceContext } from "@/context/SourceContext";
@@ -10,7 +10,7 @@ interface UserLocation {
   lng: number;
 }
 
-const Mission: NextPage = () => {
+const mission: NextPage = () => {
   const [toggleCollapse, setToggleCollapse] = useState(false);
   const [source, setSource] = useState(null);
   const [destination, setDestination] = useState(null);
@@ -19,7 +19,7 @@ const Mission: NextPage = () => {
     <SourceContext.Provider value={{ source, setSource }}>
       <DestinationContext.Provider value={{ destination, setDestination }}>
         <div className="relative h-dvh w-full">
-          <OrderForm toggleCollapse={toggleCollapse} setToggleCollapse={setToggleCollapse} />
+          <Mission toggleCollapse={toggleCollapse} setToggleCollapse={setToggleCollapse} />
           <MapExport toggleCollapse={toggleCollapse} />
         </div>
       </DestinationContext.Provider>
@@ -29,4 +29,4 @@ const Mission: NextPage = () => {
   );
 };
 
-export default Mission;
+export default mission;

@@ -62,20 +62,20 @@ const MapNotification: React.FC<MapNotificationProps> = ({ onClose, type }) => {
         className={`relative w-full h-full bg-gray-300 rounded-xl overflow-y-auto ${isShaking ? 'animate-shake' : ''}`}
         initial={{ scale: 0 }} animate={{ scale: isVisible ? 1 : 0 }} exit={{ scale: 0 }} transition={{ duration: 0.5 }}
       >
-        <MapExport type={type}/>
-        
+        <MapExport />
+
         <Button className="absolute right-4 top-4 w-8 h-8 rounded-full bg-[#14141a] outline outline-white hover:bg-gray-700" onClick={handleClose}>
-            <IoMdClose className="w-5 h-5 text-white" />
+          <IoMdClose className="w-5 h-5 text-white" />
         </Button>
         <div className="absolute bottom-4 w-full px-4 flex justify-center">
-            <div className="h-full w-1/2 bg-[#14141a] rounded-lg">
-                <Button className="w-full rounded-lg py-3 border-white hover:bg-gray-700 text-white
+          <div className="h-full w-1/2 bg-[#14141a] rounded-lg">
+            <Button className="w-full rounded-lg py-3 border-white hover:bg-gray-700 text-white
                 bg-transparent drop-shadow-md hover:drop-shadow-xl hover:text-white border hover:shadow-md">
-                <FormattedMessage id="Consignment.Add.Submit"/>
-                </Button>
-            </div>
+              <FormattedMessage id="Consignment.Add.Submit" />
+            </Button>
+          </div>
         </div>
-        
+
       </motion.div>
     </motion.div>
   );

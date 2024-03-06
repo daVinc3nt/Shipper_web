@@ -6,21 +6,9 @@ import { Button } from "@nextui-org/react";
 import { FaTrash, FaPen } from "react-icons/fa";
 import { FormattedMessage, useIntl } from "react-intl";
 
-interface OrderData {
-    id: number;
-    ordercode: number;
-    COD: string;
-    address: string;
-    height: string;
-    length: string;
-    width: string;
-    mass: string;
-    state: number;
-}
-
 interface DetailPopupProps {
     onClose: () => void;
-    dataInitial: OrderData;
+    dataInitial: any;
 }
 
 const DetailPopup: React.FC<DetailPopupProps> = ({ onClose, dataInitial }) => {
@@ -143,9 +131,9 @@ const DetailPopup: React.FC<DetailPopupProps> = ({ onClose, dataInitial }) => {
                     <div className="flex flex-col gap-5 w-full">
                         <div className="flex">
                             <div className="w-1/2 font-bold text-base"><FormattedMessage id="Mission.Detail.Info1" />:</div>
-                            <div className="w-1/2 pl-2">{data.ordercode}</div>
+                            <div className="w-1/2 pl-2">{data.order_id}</div>
                         </div>
-                        <div className="flex">
+                        {/* <div className="flex">
                             <div className="w-1/2 font-bold text-base"><FormattedMessage id="Mission.Detail.Info2" />:</div>
                             {isEditing ? (
                                 <select
@@ -160,10 +148,34 @@ const DetailPopup: React.FC<DetailPopupProps> = ({ onClose, dataInitial }) => {
                             ) : (
                                 <div className="w-1/2 pl-2">{data.state === 2 ? intl.formatMessage({ id: "Mission.Status3" }) : (data.state === 1 ? intl.formatMessage({ id: "Mission.Status2" }) : intl.formatMessage({ id: "Mission.Status1" }))}</div>
                             )}
+                        </div> */}
+                        <div className="flex">
+                            <div className="w-1/2 font-bold text-base">Tên người gửi:</div>
+                            <div className="w-1/2 pl-2">{data.name_sender}</div>
                         </div>
                         <div className="flex">
                             <div className="w-1/2 font-bold text-base"><FormattedMessage id="Mission.Detail.Info3" />:</div>
-                            <div className="w-1/2 pl-2">{data.address}</div>
+                            <div className="w-1/2 pl-2">{`${data.detail_source}, ${data.ward_source}, ${data.district_source}, ${data.province_source}`}</div>
+                        </div>
+                        <div className="flex">
+                            <div className="w-1/2 font-bold text-base">Số điện thoại người gửi:</div>
+                            <div className="w-1/2 pl-2">{data.phone_number_sender}</div>
+                        </div>
+                        <div className="flex">
+                            <div className="w-1/2 font-bold text-base">Tên người nhận:</div>
+                            <div className="w-1/2 pl-2">{data.name_receiver}</div>
+                        </div>
+                        <div className="flex">
+                            <div className="w-1/2 font-bold text-base"><FormattedMessage id="Mission.Detail.Info3" />:</div>
+                            <div className="w-1/2 pl-2">{`${data.detail_dest}, ${data.ward_dest}, ${data.district_dest}, ${data.province_dest}`}</div>
+                        </div>
+                        <div className="flex">
+                            <div className="w-1/2 font-bold text-base">Số điện thoại người nhận:</div>
+                            <div className="w-1/2 pl-2">{data.phone_number_receiver}</div>
+                        </div>
+                        <div className="flex">
+                            <div className="w-1/2 font-bold text-base">Phí:</div>
+                            <div className="w-1/2 pl-2">{parseFloat(data.fee).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</div>
                         </div>
                         <div className="flex">
                             <div className="w-1/2 font-bold text-base"><FormattedMessage id="Mission.Detail.Info4" />:</div>
