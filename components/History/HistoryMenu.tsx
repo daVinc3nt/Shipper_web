@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { useState, useEffect } from "react";
 import DemoPage from "../../api/getHistory";
 import LoadingSkeleton from "../LoadingSkeleton/loadingSkeleton";
@@ -7,11 +7,15 @@ const HistoryMenu = () => {
   const [demoPage, setDemoPage] = useState(<LoadingSkeleton />);
 
   useEffect(() => {
-    const fetchDemoPage = async () => {
-      const result = await DemoPage();
-      setDemoPage(result);
-    };
+    fetchDemoPage();
+  }, []);
 
+  const fetchDemoPage = async () => {
+    const result = await DemoPage(reloadData);
+    setDemoPage(result);
+  };
+
+  const reloadData = useCallback(() => {
     fetchDemoPage();
   }, []);
   return (
