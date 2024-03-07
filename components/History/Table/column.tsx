@@ -143,7 +143,7 @@ export const columns: ColumnDef<History>[] = [
             +
           </Button>
           {modalIsOpen && (
-            <DetailPost onClose={closeModal} dataInitial={row.original} />
+            <DetailOrder onClose={closeModal} dataInitial={row.original} />
           )}
         </div>
       );

@@ -29,7 +29,7 @@ import {
   DropdownItem,
   Button,
 } from "@nextui-org/react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import BasicPopover from "@/components/Common/Popover";
 import Filter from "@/components/Common/Filters";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
@@ -116,7 +116,10 @@ export function DataTable<TData, TValue>({
                   className="text-xxs md:text-base border border-gray-600 rounded px-4 text-center h-10"
                   aria-label="Show items per page"
                 >
-                  Show {table.getState().pagination.pageSize}
+                  <span className="text-sm">
+                    <FormattedMessage id="Show" />{" "}
+                    {table.getState().pagination.pageSize}
+                  </span>
                 </Button>
               </DropdownTrigger>
               <DropdownMenu
@@ -134,7 +137,7 @@ export function DataTable<TData, TValue>({
                       aria-label={`Show ${pageSize}`}
                       className="text-center text-black w-full"
                     >
-                      Show {pageSize}
+                      <FormattedMessage id="Show" /> {pageSize}
                     </Button>
                   </DropdownItem>
                 ))}
@@ -264,7 +267,7 @@ export function DataTable<TData, TValue>({
             <FormattedMessage id="Page" />
           </div>
           <strong className="text-xs md:text-base whitespace-nowrap">
-            {table.getState().pagination.pageIndex + 1}
+            {table.getState().pagination.pageIndex + 1}{" "}
             <FormattedMessage id="of" /> {table.getPageCount()}
           </strong>
         </span>
