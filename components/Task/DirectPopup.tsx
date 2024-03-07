@@ -7,16 +7,10 @@ import { SourceContext } from "@/context/SourceContext";
 import { DestinationContext } from "@/context/DestinationContext";
 import { FormattedMessage } from "react-intl";
 
-interface OrderData {
-    id: number;
-    lat: number;
-    lng: number;
-    address: string;
-}
 
 interface DirectPopupProps {
     onClose: () => void;
-    dataInitial: OrderData;
+    dataInitial: any;
     toggle: () => void;
 }
 
@@ -32,18 +26,18 @@ const DirectPopup: React.FC<DirectPopupProps> = ({ onClose, dataInitial, toggle 
         if (option == "source") {
             myLocation()
             setDestination({
-                lat: dataInitial.lat,
-                lng: dataInitial.lng,
-                label: dataInitial.address,
-                name: dataInitial.address
+                lat: dataInitial.lat_source,
+                lng: dataInitial.long_source,
+                label: `${dataInitial.detail_source}, ${dataInitial.ward_source}, ${dataInitial.district_source}, ${dataInitial.province_source}`,
+                name: `${dataInitial.detail_source}, ${dataInitial.ward_source}, ${dataInitial.district_source}, ${dataInitial.province_source}`
             })
         } else if (option == "destination") {
             myLocation()
             setDestination({
-                lat: dataInitial.lat,
-                lng: dataInitial.lng,
-                label: dataInitial.address,
-                name: dataInitial.address
+                lat: dataInitial.lat_destination,
+                lng: dataInitial.long_destination,
+                label: `${dataInitial.detail_dest}, ${dataInitial.ward_dest}, ${dataInitial.district_dest}, ${dataInitial.province_dest}`,
+                name: `${dataInitial.detail_dest}, ${dataInitial.ward_dest}, ${dataInitial.district_dest}, ${dataInitial.province_dest}`
             })
         }
         onClose();

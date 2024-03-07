@@ -1,6 +1,6 @@
 import { useState } from "react";
 import {useRouter } from "next/navigation";
-import OTPField from "../OtpField/OtpField";
+import OTPField from "../OtpField";
 import Link from "next/link";
 import { OTP, User } from "./fetching";
 import classNames from "classnames";

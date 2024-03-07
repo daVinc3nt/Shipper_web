@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { TbMinusVertical } from "react-icons/tb";
 import {
   ColumnDef,
@@ -36,17 +36,21 @@ import FilterAltIcon from "@mui/icons-material/FilterAlt";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  reloadData: () => void;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  reloadData
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
   const [rowSelection, setRowSelection] = React.useState({});
+  const [selectedOption, setSelectedOption] = useState(0);
+  const intl = useIntl()
   const table = useReactTable({
     data,
     columns,
@@ -63,6 +67,10 @@ export function DataTable<TData, TValue>({
       rowSelection,
     },
   });
+
+  useEffect(() => {
+    reloadData();
+  }, [selectedOption]);
 
   const paginationButtons = [];
   for (let i = 0; i < table.getPageCount(); i++) {
@@ -101,39 +109,18 @@ export function DataTable<TData, TValue>({
     <div>
       <div className="flex items-center py-4">
         <div className="w-full flex flex-col sm:flex-row">
-          <div className="relative w-full sm:w-1/2 flex">
-            <input
-              id="postSearch"
-              type="date"
-              value={
-                (table.getColumn("postName")?.getFilterValue() as string) ?? ""
-              }
-              onChange={(event) =>
-                table.getColumn("postName")?.setFilterValue(event.target.value)
-              }
-              className={`peer h-10 self-center w-full border border-gray-600 rounded focus:outline-none focus:border-blue-500 truncate bg-transparent
-                    text-left placeholder-transparent pl-3 pt-2 pr-12 text-sm text-white`}
-              placeholder=""
-            />
-            <label
-              htmlFor="postSearch"
-              className={`absolute left-3 -top-0 text-xxs leading-5 text-gray-500 transition-all 
-                    peer-placeholder-shown:text-sm peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-2.5 
-                    peer-focus:-top-0.5 peer-focus:leading-5 peer-focus:text-blue-500 peer-focus:text-xxs`}
-            >
-              Tìm kiếm theo ngày giao thành công
-            </label>
+          <div className="relative w-full flex justify-between">
             <Dropdown className="z-30">
               <DropdownTrigger>
                 <Button
-                  className="text-xs md:text-base border border-gray-600 rounded ml-2 w-24 sm:w-36 text-center"
+                  className="text-xxs md:text-base border border-gray-600 rounded px-4 text-center h-10"
                   aria-label="Show items per page"
                 >
                   Show {table.getState().pagination.pageSize}
                 </Button>
               </DropdownTrigger>
               <DropdownMenu
-                className="bg-[#1a1b23] border border-gray-300 rounded w-24"
+                className="bg-white border border-gray-300 rounded"
                 aria-labelledby="dropdownMenuButton"
               >
                 {[10, 20, 30, 40, 50].map((pageSize, index) => (
@@ -145,7 +132,7 @@ export function DataTable<TData, TValue>({
                       onClick={() => table.setPageSize(pageSize)}
                       variant="bordered"
                       aria-label={`Show ${pageSize}`}
-                      className="text-center  text-white w-full"
+                      className="text-center text-black w-full"
                     >
                       Show {pageSize}
                     </Button>
@@ -153,26 +140,55 @@ export function DataTable<TData, TValue>({
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <BasicPopover icon={<FilterAltIcon />}>
-              <Filter
-                type="search"
-                column={table.getColumn("postRate")}
-                table={table}
-                title="Tên kiện hàng"
-              />
-              <Filter
-                type="search"
-                column={table.getColumn("postRate")}
-                table={table}
-                title="Tên người nhận"
-              />
-              <Filter
-                type="search"
-                column={table.getColumn("postRate")}
-                table={table}
-                title="Giá trị đơn hàng"
-              />
-            </BasicPopover>
+            <Dropdown className={`z-30`}>
+              <DropdownTrigger>
+                <Button className="text-xs md:text-base border h-10 border-gray-600 rounded px-4 text-center" >
+                  <span className="bg-white rounded-full font-normal">{intl.formatMessage({ id: `Mission.Filter${selectedOption + 1}` })}</span>
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                className="bg-white border border-gray-300 no-scrollbar rounded-md w-full max-h-80 overflow-y-auto"
+                aria-labelledby="dropdownMenuButton2"
+                key="dropdownMenuButton2"
+              >
+                <DropdownItem key="filter_all" textValue="filter_all">
+                  <Button
+                    aria-label="dropdownItem1"
+                    className={`text-center text-black w-full rounded-md px-2 ${selectedOption === 0 ? "bg-blue-500 text-white" : ""}`}
+                    onClick={() => setSelectedOption(0)}
+                  >
+                    <FormattedMessage id="Mission.Filter1" />
+                  </Button>
+                </DropdownItem>
+                <DropdownItem key="filter_today" textValue="filter_today">
+                  <Button
+                    aria-label="dropdownItem2"
+                    className={`text-center text-black w-full rounded-md px-2 ${selectedOption === 1 ? "bg-blue-500 text-white" : ""}`}
+                    onClick={() => setSelectedOption(1)}
+                  >
+                    <FormattedMessage id="Mission.Filter2" />
+                  </Button>
+                </DropdownItem>
+                <DropdownItem key="filter_this_week" textValue="filter_this_week">
+                  <Button
+                    aria-label="dropdownItem3"
+                    className={`text-center text-black w-full rounded-md px-2 ${selectedOption === 2 ? "bg-blue-500 text-white" : ""}`}
+                    onClick={() => setSelectedOption(2)}
+                  >
+                    <FormattedMessage id="Mission.Filter3" />
+                  </Button>
+                </DropdownItem>
+                <DropdownItem key="filter_this_month" textValue="filter_this_month">
+                  <Button
+                    aria-label="dropdownItem3"
+                    className={`text-center text-black w-full rounded-md px-2 ${selectedOption === 3 ? "bg-blue-500 text-white" : ""}`}
+                    onClick={() => setSelectedOption(3)}
+                  >
+                    <FormattedMessage id="Mission.Filter4" />
+                  </Button>
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
           </div>
         </div>
       </div>
@@ -187,9 +203,9 @@ export function DataTable<TData, TValue>({
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   );
                 })}
@@ -201,9 +217,8 @@ export function DataTable<TData, TValue>({
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  className={`border-gray-700 ${
-                    row.getIsSelected() ? "bg-gray-700" : ""
-                  }`}
+                  className={`border-gray-700 ${row.getIsSelected() ? "bg-gray-700" : ""
+                    }`}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
@@ -230,28 +245,15 @@ export function DataTable<TData, TValue>({
       </div>
 
       <div className="flex items-center justify-center space-x-2 py-4">
-        <button
-          className={`text-xs md:text-md justify-self-start text-muted-foreground rounded-lg border border-gray-600 px-4 py-2 bg-transparent hover:bg-gray-700 hover:text-white hover:shadow-md focus:outline-none font-normal text-white
-          ${
-            table.getFilteredSelectedRowModel().rows.length > 0
-              ? "border-red-500"
-              : "border-gray-600"
-          }`}
-          onClick={deleteRows}
-        >
-          <FormattedMessage id="Delete" />{" "}
-          {table.getFilteredSelectedRowModel().rows.length}/
-          {table.getFilteredRowModel().rows.length}
-        </button>
         <Button
           variant="light"
           size="sm"
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
           className="px-2 py-[0.15rem] mb-0.5 w-12 sm:w-16 bg-transparent 
-          drop-shadow-md hover:drop-shadow-xl hover:bg-opacity-30 hover:text-white border border-white hover:bg-black
-          hover:shadow-md md:text-base focus:outline-none font-normal
-          text-white rounded-md text-sm text-center me-2"
+          drop-shadow-md hover:drop-shadow-xl hover:bg-opacity-20 hover:text-white border border-black hover:bg-black
+          hover:shadow-md md:text-base focus:outline-none font-normal hover:border-white
+          text-black rounded-md text-sm text-center me-2"
         >
           <span>
             <FormattedMessage id="Prev" />
@@ -285,9 +287,9 @@ export function DataTable<TData, TValue>({
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
           className="px-2 py-[0.15rem] mb-0.5 w-12 sm:w-16 bg-transparent 
-          drop-shadow-md hover:drop-shadow-xl hover:bg-opacity-30 hover:text-white border border-white hover:bg-black
-          hover:shadow-md md:text-base focus:outline-none font-normal
-          text-white rounded-md text-sm text-center me-2"
+          drop-shadow-md hover:drop-shadow-xl hover:bg-opacity-20 hover:text-white border border-black hover:bg-black
+          hover:shadow-md md:text-base focus:outline-none font-normal hover:border-white
+          text-black rounded-md text-sm text-center me-2"
         >
           <span>
             <FormattedMessage id="Next" />

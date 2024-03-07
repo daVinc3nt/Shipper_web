@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import OTPField from "../OtpField/OtpField";
+import OTPField from "../OtpField";
 import { OTP, User } from "./fetching";
 import classNames from "classnames";
 import LoginLangSelector from "@/components/LangSelector/LoginLangSelector"
 import { FormattedMessage, useIntl, IntlShape, } from "react-intl";
-
-
+import { UsersAuthenticate , StaffsAuthenticate, UsersOperation } from "@/TDLib/tdlogistics"
+import { useRouter } from "next/router";
 const SignupForm = () => {
   interface FormValues {
     name: string;
@@ -88,16 +88,27 @@ const SignupForm = () => {
     {setshake(false);}
   };
   const SignUp = () =>{
-    const {name, email, phoneNumber} = formValues;
-    handleName(name);
-    handleEmail(email);
-    handleNum(phoneNumber);
-    const {nameEr, emailEr, phoneNumberEr} = formErrors;
-    if ( nameEr !== "" || emailEr !== "" || phoneNumberEr !== "") {setshake(true);return;}
-    else {
+    // const {name, email, phoneNumber} = formValues;
+    // handleName(name);
+    // handleEmail(email);
+    // handleNum(phoneNumber);
+    // const {nameEr, emailEr, phoneNumberEr} = formErrors;
+    // if ( nameEr !== "" || emailEr !== "" || phoneNumberEr !== "") {setshake(true);return;}
+    // else {
+    // setshowOtp(!showOtp);
+    // Test();
+    // }
     setshowOtp(!showOtp);
-    Auth();
-    }
+    Test();
+  }
+  const Test =() => {
+    const username = "ntdung@tdlogistics";
+    const password = "NTDung@tdlogistics2k24";
+
+    const staffsAuthenticate = new StaffsAuthenticate();
+    staffsAuthenticate.login(username, password)
+    .then(result => console.log(result))
+    .catch(error => console.log(error));
   }
   const Auth =() => {
     const {name, email, phoneNumber} = formValues;
@@ -185,16 +196,12 @@ const SignupForm = () => {
           </div>
         </div>
       </div>
-    </div>) : (
-      <div> 
+    </div>) : (      
       <div className="flex justify-center items-center">
-       <div className="p-4 sm:p-8 flex-1">
-         <div className="mx-auto overflow-hidden">
-           <div className="text-center flex flex-col items-center">
+       <div className="p-4 sm:p-8 flex-1 mx-auto overflow-hidden text-center flex flex-col items-center"> 
              <h1 className="text-lg sm:text-5xl font-bold text-indigo-900">
                 <FormattedMessage id="sms.wait" />
              </h1>
-
              <form className="mt-5 sm:mt-12 w-5/6" action="" method="POST">
                <OTPField 
                showOtp={showOtp}
@@ -203,11 +210,8 @@ const SignupForm = () => {
                otp = {otpCode}
               />
              </form>
-           </div>
-         </div>
        </div>
-     </div>
-   </div>
+      </div>
     )}
     </div>
   );
