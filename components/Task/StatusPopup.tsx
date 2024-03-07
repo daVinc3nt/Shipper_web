@@ -3,44 +3,44 @@ import { AnimatePresence, motion } from "framer-motion";
 import { IoMdClose } from "react-icons/io";
 import { Button } from "@nextui-org/react";
 import { MdRadioButtonChecked, MdRadioButtonUnchecked } from "react-icons/md";
-import { FormattedMessage } from "react-intl";
-
-interface OrderData {
-    id: number;
-    ordercode: number;
-    COD: string;
-    address: string;
-    height: string;
-    length: string;
-    width: string;
-    mass: string;
-    state: number;
-}
+import { FormattedMessage, useIntl } from "react-intl";
+import { ShippersOperation } from "@/TDLib/tdlogistics";
 
 interface StatusPopupProps {
     onClose: () => void;
-    dataInitial: OrderData;
+    dataInitial: any;
+    reloadData: () => void;
 }
 
-const StatusPopup: React.FC<StatusPopupProps> = ({ onClose, dataInitial }) => {
+const StatusPopup: React.FC<StatusPopupProps> = ({ onClose, dataInitial, reloadData }) => {
     const notificationRef = useRef<HTMLDivElement>(null);
     const [isVisible, setIsVisible] = useState(true);
-    const [data, setData] = useState(dataInitial);
-    const [originalData, setOriginalData] = useState(dataInitial);
+    const [data, setData] = useState(0);
+    const intl = useIntl()
 
-    const handleSubmitClick = () => {
-        onClose();
+    const shippersOperation = new ShippersOperation();
+
+    const confirmingCompletedTaskInfo = {
+        id: parseFloat(dataInitial.id)
     };
 
-    const handleStateChange = (newState: number) => {
-        if (originalData.state == 0) {
-            setData({ ...data, state: newState });
-        } else if (originalData.state == 1 && newState >= 1) {
-            setData({ ...data, state: newState });
-        } else if (originalData.state == 2 && newState >= 2) {
-            setData({ ...data, state: newState });
+    const handleSubmitClick = async () => {
+        if (data === 1) {
+            const confirmed = window.confirm(intl.formatMessage({ id: 'Mission.Status.Alert' }));
+            if (confirmed) {
+                const response = await shippersOperation.confirmCompletedTask(confirmingCompletedTaskInfo);
+                if (response.error) {
+                    alert(intl.formatMessage({ id: 'Mission.Detail.Alert3' }));
+                } else {
+                    reloadData();
+                    onClose();
+                }
+            }
+        } else {
+            onClose();
         }
     };
+
 
     return (
         <motion.div
@@ -73,17 +73,13 @@ const StatusPopup: React.FC<StatusPopupProps> = ({ onClose, dataInitial }) => {
                     </Button>
                 </div>
                 <div className="mt-4 relative flex flex-col bg-gray-200 bg-clip-border w-full px-10 py-2 rounded-sm gap-1">
-                    <Button className="w-full rounded-xl flex flex-row justify-between p-2" onClick={() => handleStateChange(0)}>
+                    <Button className="w-full rounded-xl flex flex-row justify-between p-2" onClick={() => setData(0)}>
                         <span className="pr-1"><FormattedMessage id="Mission.Status1" /></span>
-                        {data.state === 0 ? <MdRadioButtonChecked /> : <MdRadioButtonUnchecked />}
+                        {data === 0 ? <MdRadioButtonChecked /> : <MdRadioButtonUnchecked />}
                     </Button>
-                    <Button className="w-full rounded-xl flex flex-row justify-between p-2" onClick={() => handleStateChange(1)}>
+                    <Button className="w-full rounded-xl flex flex-row justify-between p-2" onClick={() => setData(1)}>
                         <span className="pr-1"><FormattedMessage id="Mission.Status2" /></span>
-                        {data.state === 1 ? <MdRadioButtonChecked /> : <MdRadioButtonUnchecked />}
-                    </Button>
-                    <Button className="w-full rounded-xl flex flex-row justify-between p-2" onClick={() => handleStateChange(2)} disabled={data.state === 2}>
-                        <span className="pr-1"><FormattedMessage id="Mission.Status3" /></span>
-                        {data.state === 2 ? <MdRadioButtonChecked /> : <MdRadioButtonUnchecked />}
+                        {data === 1 ? <MdRadioButtonChecked /> : <MdRadioButtonUnchecked />}
                     </Button>
                 </div>
 

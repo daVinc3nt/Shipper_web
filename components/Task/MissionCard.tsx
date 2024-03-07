@@ -6,7 +6,7 @@ import StatusPopup from "./StatusPopup";
 import DirectPopup from "./DirectPopup";
 import { motion } from "framer-motion";
 import { FormattedMessage } from "react-intl";
-const MissionCard = ({ data, toggle, keyName }) => {
+const MissionCard = ({ data, toggle, keyName, reloadData }) => {
     const [openDetail, setOpenDetail] = useState(false);
     const [openStatus, setOpenStatus] = useState(false);
     const [openDirect, setOpenDirect] = useState(false);
@@ -18,8 +18,8 @@ const MissionCard = ({ data, toggle, keyName }) => {
             exit={{ opacity: 0, x: -30 }}
             key={keyName}
         >
-            {openDetail && <DetailPopup onClose={() => setOpenDetail(false)} dataInitial={data} />}
-            {openStatus && <StatusPopup onClose={() => setOpenStatus(false)} dataInitial={data} />}
+            {openDetail && <DetailPopup onClose={() => setOpenDetail(false)} dataInitial={data} reloadData={reloadData} />}
+            {openStatus && <StatusPopup onClose={() => setOpenStatus(false)} dataInitial={data} reloadData={reloadData} />}
             {openDirect && <DirectPopup onClose={() => setOpenDirect(false)} dataInitial={data} toggle={toggle} />}
             <Dropdown className="z-30">
                 <DropdownTrigger >
@@ -63,10 +63,19 @@ const MissionCard = ({ data, toggle, keyName }) => {
                     </DropdownItem>
                 </DropdownMenu>
             </Dropdown>
-            <div className={`w-full pr-10 flex flex-col text-black`}>
-                <span><FormattedMessage id="Mission.OrderCode" />: {data.order_id}</span>
-                <span><FormattedMessage id="Mission.ReceiveLocation" />: {`${data.detail_source}, ${data.ward_source}, ${data.district_source}, ${data.province_source}`}</span>
-                <span><FormattedMessage id="Mission.DeliveryLocation" />: {`${data.detail_dest}, ${data.ward_dest}, ${data.district_dest}, ${data.province_dest}`}</span>
+            <div className={`w-full pr-8 flex flex-col text-black`}>
+                <div className="flex flex-col">
+                    <p className="font-bold whitespace-nowrap"><FormattedMessage id="Mission.OrderCode" />: </p>
+                    <p className="truncate">{data.order_id}</p>
+                </div>
+                <div className="flex flex-col">
+                    <p className="font-bold whitespace-nowrap"><FormattedMessage id="Mission.ReceiveLocation" />: </p>
+                    <p>{`${data.detail_source}, ${data.ward_source}, ${data.district_source}, ${data.province_source}`}</p>
+                </div>
+                <div className="flex flex-col">
+                    <p className="font-bold whitespace-nowrap"><FormattedMessage id="Mission.DeliveryLocation" />: </p>
+                    <p>{`${data.detail_dest}, ${data.ward_dest}, ${data.district_dest}, ${data.province_dest}`}</p>
+                </div>
             </div>
         </motion.div>
     );

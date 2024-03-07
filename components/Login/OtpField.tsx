@@ -1,6 +1,6 @@
 import React, { FC, useState, useRef, useEffect} from "react";
 import { useRouter } from 'next/router'
-import { User, OTP } from "../LoginPage/fetching"
+import { User, OTP } from "./LoginPage/fetching"
 import { FormattedMessage } from "react-intl";
 interface OptFieldProps {
     showOtp: boolean;
