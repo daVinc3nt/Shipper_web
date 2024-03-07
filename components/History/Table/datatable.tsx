@@ -29,7 +29,7 @@ import {
   DropdownItem,
   Button,
 } from "@nextui-org/react";
-import { FormattedMessage, useIntl } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import BasicPopover from "@/components/Common/Popover";
 import Filter from "@/components/Common/Filters";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
@@ -101,15 +101,15 @@ export function DataTable<TData, TValue>({
     <div>
       <div className="flex items-center py-4">
         <div className="w-full flex flex-col sm:flex-row">
-          <div className="relative w-full sm:w-1/2 lg:w-1/3 flex">
+          <div className="relative w-full sm:w-1/2 flex">
             <input
               id="postSearch"
               type="date"
               value={
-                (table.getColumn("postRate")?.getFilterValue() as string) ?? ""
+                (table.getColumn("postName")?.getFilterValue() as string) ?? ""
               }
               onChange={(event) =>
-                table.getColumn("postRate")?.setFilterValue(event.target.value)
+                table.getColumn("postName")?.setFilterValue(event.target.value)
               }
               className={`peer h-10 self-center w-full border border-gray-600 rounded focus:outline-none focus:border-blue-500 truncate bg-transparent
                     text-left placeholder-transparent pl-3 pt-2 pr-12 text-sm text-white`}
@@ -121,18 +121,15 @@ export function DataTable<TData, TValue>({
                     peer-placeholder-shown:text-sm peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-2.5 
                     peer-focus:-top-0.5 peer-focus:leading-5 peer-focus:text-blue-500 peer-focus:text-xxs`}
             >
-              <FormattedMessage id="History.Search" />
+              Tìm kiếm theo ngày giao thành công
             </label>
             <Dropdown className="z-30">
               <DropdownTrigger>
                 <Button
-                  className="text-xxs md:text-base border border-gray-600 rounded ml-2 w-48 text-center"
+                  className="text-xs md:text-base border border-gray-600 rounded ml-2 w-24 sm:w-36 text-center"
                   aria-label="Show items per page"
                 >
-                  <span className="text-sm">
-                    <FormattedMessage id="Show" />{" "}
-                    {table.getState().pagination.pageSize}
-                  </span>
+                  Show {table.getState().pagination.pageSize}
                 </Button>
               </DropdownTrigger>
               <DropdownMenu
@@ -150,7 +147,7 @@ export function DataTable<TData, TValue>({
                       aria-label={`Show ${pageSize}`}
                       className="text-center  text-white w-full"
                     >
-                      <FormattedMessage id="Show" /> {pageSize}
+                      Show {pageSize}
                     </Button>
                   </DropdownItem>
                 ))}
@@ -265,7 +262,7 @@ export function DataTable<TData, TValue>({
             <FormattedMessage id="Page" />
           </div>
           <strong className="text-xs md:text-base whitespace-nowrap">
-            {table.getState().pagination.pageIndex + 1}{" "}
+            {table.getState().pagination.pageIndex + 1}
             <FormattedMessage id="of" /> {table.getPageCount()}
           </strong>
         </span>

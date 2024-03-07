@@ -4,7 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Button } from "@nextui-org/react";
 import React, { useState, useEffect } from "react";
-import DetailOrder from "./detailOrder";
+import DetailPost from "./detailPost";
 import { Checkbox } from "@/components/TableUI/checkbox";
 import { FormattedMessage } from "react-intl";
 export type History = {
@@ -12,7 +12,7 @@ export type History = {
   postName: string;
   postMail: string;
   postIncome: string;
-  postRate: Date;
+  postRate: string;
   postPhone: string;
   postAddress: string;
   postBankAccount: string;
@@ -65,7 +65,7 @@ export const columns: ColumnDef<History>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Tên kiện hàng
+          Mã đơn hàng
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -102,13 +102,6 @@ export const columns: ColumnDef<History>[] = [
   },
   {
     accessorKey: "postRate",
-    cell: ({ row }) => {
-      return (
-        <div className="flex items-center">
-          <div>{new Date(row.original.postRate).toLocaleDateString()}</div>
-        </div>
-      );
-    },
     header: ({ column }) => {
       return (
         <Button
@@ -123,13 +116,6 @@ export const columns: ColumnDef<History>[] = [
   },
   {
     accessorKey: "postRate",
-    cell: ({ row }) => {
-      return (
-        <div className="flex items-center">
-          <div>{new Date(row.original.postRate).toLocaleDateString()}</div>
-        </div>
-      );
-    },
     header: ({ column }) => {
       return (
         <Button
@@ -159,7 +145,7 @@ export const columns: ColumnDef<History>[] = [
   {
     accessorKey: "Chi tiết",
     header: () => {
-      return <>Chi tiết</>;
+      return <FormattedMessage id="Detail/Edit" />;
     },
     cell: ({ row }) => {
       const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -181,7 +167,7 @@ export const columns: ColumnDef<History>[] = [
             +
           </Button>
           {modalIsOpen && (
-            <DetailOrder onClose={closeModal} dataInitial={row.original} />
+            <DetailPost onClose={closeModal} dataInitial={row.original} />
           )}
         </div>
       );
