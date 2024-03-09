@@ -1,8 +1,7 @@
 import { useState } from "react";
 import {useRouter } from "next/navigation";
 import OTPField from "../OtpField";
-import Link from "next/link";
-import { OTP, User } from "./fetching";
+import { StaffsAuthenticate } from "@/TDLib/tdlogistics";
 import classNames from "classnames";
 const MobileLog = () => {
   interface FormValues {
@@ -14,7 +13,6 @@ const MobileLog = () => {
     emailEr: string;
     phoneNumberEr: string;
   }
-  let user, otpCode;
   
   const router = useRouter();
   const initialValues: FormValues = {  email: "", phoneNumber: "", otp: ""};
@@ -59,12 +57,13 @@ const MobileLog = () => {
     const {email, phoneNumber} = formValues;
     if (!email || !phoneNumber)
       return null;
-    otpCode = new OTP(phoneNumber,email);
-    // Send OTP
-    console.log(otpCode);
-    otpCode.sendOTP()
-    .then(message => console.log(message))
-    .catch(error => console.log(error));
+      const staffsAuthenticate = new StaffsAuthenticate();
+      if (!email || !phoneNumber)
+        return null;
+      // Send OTP
+      staffsAuthenticate.sendOTP(email, phoneNumber)
+      .then(message => console.log(message))
+      .catch(error => console.log(error)).then(()=>{router.push("/dashboard")});
   }
 
   const validate = (values: FormValues, type: number)=> {
@@ -121,7 +120,7 @@ const MobileLog = () => {
                                   id="email"
                                   name="email"
                                   type="text"
-                                  className="peer h-10 w-full bg-transparent border-b-2 border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:border-indigo-600"
+                                  className="peer h-10 w-full bg-white border-b-2 border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:border-indigo-600"
                                   placeholder="john@doe.com"
                                   onChange={(e) => handleEmail(e.target.value)} 
                                 />
@@ -136,7 +135,7 @@ const MobileLog = () => {
                                 <div className="mt-10 sm:mt-10 relative">
                                   <input
                                     type="tel"
-                                    className=" peer h-10 w-full border-b-2 border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:border-indigo-600"
+                                    className=" peer h-10 w-full border-b-2 bg-white border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:border-indigo-600"
                                     placeholder="Số điện thoại"
                                     onChange={(e) => handleNum(e.target.value)} 
                                   />
@@ -174,8 +173,8 @@ const MobileLog = () => {
                                 <OTPField 
                                 showOtp={showOtp}
                                 setshowOtp={setshowOtp}
-                                user = {user}
-                                otp = {otpCode}
+                                phone={formValues?.phoneNumber}
+                                mail={formValues?.email}
                             />
                               </form>
                             </div>

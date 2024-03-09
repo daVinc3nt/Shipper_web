@@ -1,11 +1,30 @@
 import axios, { AxiosResponse } from "axios";
-import FormData from "form-data";
+import { io } from 'socket.io-client';
+const FormData = require("form-data");
+
+// const socket = io("http://localhost:4000");
+
+// socket.on("connect", () => {
+//     console.log("Connected to server.");
+// });
+
+// socket.on("notifyError", message => {
+//     // showing custome notification on UI
+// });
+
+// socket.on("notifySuccessCreatedNewOrder", message => {
+//     // showing custome notification on UI
+// });
+
+// socket.on("notifyFailCreatedNewOrder", message => {
+//     // showing custome notification on UI
+// });
 
 class UsersAuthenticate {
     private baseUrl: string;
     constructor() {
         // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/users";
-        this.baseUrl = "http://localhost:5000/api/v1/users";
+        this.baseUrl = "http://localhost:4000/api/v1/users";
     }
 
     async sendOTP(phoneNumber: string, email: string): Promise<any> {
@@ -48,7 +67,7 @@ class StaffsAuthenticate {
     private baseUrl: string;
     constructor() {
         // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/staffs";
-        this.baseUrl = "http://localhost:5000/api/v1/staffs";
+        this.baseUrl = "http://localhost:4000/api/v1/staffs";
     }
 
     async login(username: string, password: string): Promise<any> {
@@ -104,29 +123,29 @@ class StaffsAuthenticate {
     }
 }
 
-interface CreatingUserInfo {
+export interface CreatingUserInfo {
     fullname: string,
     phone_number: string,
     email: string,
 }
 
-interface FindingUserByUserCondition {
+export interface FindingUserByUserCondition {
     phone_number: string,
 }
 
-interface FindingUserByAdminConditions {
+export interface FindingUserByAdminConditions {
     user_id: string,
     fullname: string,
     phone_number: string,
     email: string,
 }
 
-interface UpdatingUserInfo {
+export interface UpdatingUserInfo {
     fullname: string,
     email: string,
 }
 
-interface UpdatingUserCondition {
+export interface UpdatingUserCondition {
     user_id: string,
 }
 
@@ -135,7 +154,7 @@ class UsersOperation {
 
     constructor(phoneNumber: string) {
         // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/users";
-        this.baseUrl = "http://localhost:5000/api/v1/users";
+        this.baseUrl = "http://localhost:4000/api/v1/users";
     }
 
     async findByUser(condition: FindingUserByUserCondition) : Promise<any> {
@@ -195,11 +214,11 @@ class UsersOperation {
     }
 }
 
-interface CheckingExistAgencyCondition {
+export interface CheckingExistAgencyCondition {
     agency_id: string,
 }
 
-interface CreatingAgencyInfo {
+export interface CreatingAgencyInfo {
     username: string,
     user_password: string,
     user_fullname: string,
@@ -234,11 +253,11 @@ interface CreatingAgencyInfo {
     bank: string,
 }
 
-interface FindingAgencyByAgencyInfo {
+export interface FindingAgencyByAgencyInfo {
     agencyId: string,
 }
 
-interface FindingAgencyByAdminInfo {
+export interface FindingAgencyByAdminInfo {
     agency_id: string,
     agency_name: string,
     level: string,
@@ -251,7 +270,7 @@ interface FindingAgencyByAdminInfo {
     bank: string,
 }
 
-interface UpdatingAgencyInfo {
+export interface UpdatingAgencyInfo {
     agency_name: string,
     province: string,
     district: string,
@@ -267,11 +286,11 @@ interface UpdatingAgencyInfo {
     bank: string,
 }
 
-interface UpdatingAgencyCondition {
+export interface UpdatingAgencyCondition {
     agency_id: string,
 }
 
-interface DeletingAgencyCondition {
+export interface DeletingAgencyCondition {
     agency_id: string,
 }
 
@@ -279,7 +298,7 @@ class AgencyOperation {
     private baseUrl: string;
     constructor() {
         // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/agencies";
-        this.baseUrl = "http://localhost:5000/api/v1/agencies";
+        this.baseUrl = "http://localhost:4000/api/v1/agencies";
     }
 
     async checkExist(condition: CheckingExistAgencyCondition) {
@@ -367,7 +386,7 @@ class AgencyOperation {
     }
 }
 
-interface CreatingTransportPartnerByAdminInfo {
+export interface CreatingTransportPartnerByAdminInfo {
     // Representor information
     username: string,
     user_password: string,
@@ -398,7 +417,7 @@ interface CreatingTransportPartnerByAdminInfo {
     bank: string,
 }
 
-interface CreatingTransportPartnerByAgencyInfo {
+export interface CreatingTransportPartnerByAgencyInfo {
     // Representor information
     username: string,
     user_password: string,
@@ -428,11 +447,11 @@ interface CreatingTransportPartnerByAgencyInfo {
     bank: string,
 }
 
-interface FindingTransportPartnerByTransportPartnerCondition {
+export interface FindingTransportPartnerByTransportPartnerCondition {
     transport_partner_id: string,
 }
 
-interface FindingTransportPartnerByAdminConditions {
+export interface FindingTransportPartnerByAdminConditions {
     transport_partner_id: string,
     tax_code: string,
     transport_partner_name: string,
@@ -446,7 +465,7 @@ interface FindingTransportPartnerByAdminConditions {
     bank: string,
 }
 
-interface UpdatingTransportPartnerInfo {
+export interface UpdatingTransportPartnerInfo {
     tax_code: string,
     transport_partner_name: string,
     province: string,
@@ -460,11 +479,11 @@ interface UpdatingTransportPartnerInfo {
     debit: string,
 }
 
-interface UpdatingTransportPartnerCondition {
+export interface UpdatingTransportPartnerCondition {
     transport_partner_id: string,
 }
 
-interface DeletingTransportPartnerCondition {
+export interface DeletingTransportPartnerCondition {
     transport_partner_id: string,
 }
 
@@ -473,7 +492,7 @@ class TransportPartnersOperation {
 
     constructor() {
         // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/transport_partners";
-        this.baseUrl = "http://localhost:5000/api/v1/transport_partners";
+        this.baseUrl = "http://localhost:4000/api/v1/transport_partners";
     }
 
     async createByAdmin(info: CreatingTransportPartnerByAdminInfo) {
@@ -534,7 +553,7 @@ class TransportPartnersOperation {
 
     async update(info: UpdatingTransportPartnerInfo, condition: UpdatingTransportPartnerCondition) {
         try {
-            const response = await axios.post(`${this.baseUrl}/update?transport_partner_id=${condition.transport_partner_id}`, info, {
+            const response = await axios.put(`${this.baseUrl}/update?transport_partner_id=${condition.transport_partner_id}`, info, {
                 withCredentials: true,
             });
 
@@ -561,11 +580,11 @@ class TransportPartnersOperation {
     }
 }
 
-interface CheckingExistVehicleCondition {
+export interface CheckingExistVehicleCondition {
     vehicle_id: string,
 }
 
-interface CreatingVehicleByAdminInfo {
+export interface CreatingVehicleByAdminInfo {
     agency_id: string,
     transport_partner_id: string,
     staff_id: string,
@@ -574,7 +593,7 @@ interface CreatingVehicleByAdminInfo {
     max_load: string,
 }
 
-interface CreatingVehicleByAgencyInfo {
+export interface CreatingVehicleByAgencyInfo {
     transport_partner_id: string,
     staff_id: string,
     type: string,
@@ -582,11 +601,11 @@ interface CreatingVehicleByAgencyInfo {
     max_load: string,
 }
 
-interface FindingVehicleByStaffCondition {
+export interface FindingVehicleByStaffCondition {
     staff_id: string,
 }
 
-interface FindingVehicleByAdminConditions {
+export interface FindingVehicleByAdminConditions {
     vehicle_id: string,
     transport_partner_id: string,
     staff_id: string,
@@ -595,11 +614,11 @@ interface FindingVehicleByAdminConditions {
     mass: string,
 }
 
-interface GettingOrdersContainedByVehicleCondition {
+export interface GettingOrdersContainedByVehicleCondition {
     vehicle_id: string,
 }
 
-interface UpdatingVehicleInfo {
+export interface UpdatingVehicleInfo {
     transport_partner_id: string,
     staff_id: string,
     type: string,
@@ -607,27 +626,27 @@ interface UpdatingVehicleInfo {
     max_load: string,
 }
 
-interface UpdatingVehicleCondition {
+export interface UpdatingVehicleCondition {
     vehicle_id: string,
 }
 
-interface AddingOrdersToVehicleInfo {
+export interface AddingOrdersToVehicleInfo {
     order_ids: Object,
 }
 
-interface AddingOrdersToVehicleCondition {
+export interface AddingOrdersToVehicleCondition {
     vehicle_id: string,
 }
 
-interface DeletingOrdersFromVehicleInfo {
+export interface DeletingOrdersFromVehicleInfo {
     order_ids: Object,
 }
 
-interface DeletingOrdersFromVehicleCondition {
+export interface DeletingOrdersFromVehicleCondition {
     vehicle_id: string,
 }
 
-interface DeletingVehicleCondition {
+export interface DeletingVehicleCondition {
     vehicle_id: string,
 }
 
@@ -636,7 +655,7 @@ class Vehicle {
 
     constructor() {
         // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/vehicle";
-        this.baseUrl = "http://localhost:5000/api/v1/vehicle";
+        this.baseUrl = "http://localhost:4000/api/v1/vehicle";
     }
 
     async checkExist(condition: CheckingExistVehicleCondition) {
@@ -646,7 +665,7 @@ class Vehicle {
             });
 
             const data = response.data;
-            return { error: data.error, message: data.message };
+            return { error: data.error, existed: data.existed, message: data.message };
         } catch (error: any) {
             console.log("Error checking exist vehicle: ", error.response.data);
             return error.response.data;
@@ -781,9 +800,8 @@ class Vehicle {
     }
 }
 
-interface CreatingStaffByAgencyInfo {
-	agency_id: string,
-    fullname: string,
+export interface CreatingStaffByAgencyInfo {
+	fullname: string,
     username: string,
     password: string,
     date_of_birth: string,
@@ -792,7 +810,7 @@ interface CreatingStaffByAgencyInfo {
     phone_number: string,
     role: string,
     position: string,
-    salary: string, 
+    salary: number, 
     paid_salary: number,
     province: string,
     district: string,
@@ -800,7 +818,8 @@ interface CreatingStaffByAgencyInfo {
     detail_address: string,
 }
 
-interface CreatingStaffByAdminInfo {
+export interface CreatingStaffByAdminInfo {
+    agency_id: string,
     fullname: string,
     username: string,
     password: string,
@@ -810,7 +829,7 @@ interface CreatingStaffByAdminInfo {
     phone_number: string,
     role: string,
     position: string,
-    salary: string, 
+    salary: number, 
     paid_salary: number,
     province: string,
     district: string,
@@ -818,11 +837,11 @@ interface CreatingStaffByAdminInfo {
     detail_address: string,
 }
   
-interface FindingStaffByStaffCondition {
+export interface FindingStaffByStaffCondition {
     staff_id: string,
 }
   
-interface FindingStaffByAdminConditions {
+export interface FindingStaffByAdminConditions {
     staff_id: string,
     fullname: string,
     username: string,
@@ -836,39 +855,39 @@ interface FindingStaffByAdminConditions {
     town: string,
 }
   
-interface UpdatingStaffInfo {
+export interface UpdatingStaffInfo {
     fullname: string,
     username: string,
     date_of_birth: string, 
     email: string,
     phone_number: string,
     role: string,
-    salary: string, 
-    paid_salary: string, 
+    salary: number, 
+    paid_salary: number, 
     province: string,
     district: string,
     town: string,
     detail_address: string,
 }
   
-interface UpdatingStaffCondition {
+export interface UpdatingStaffCondition {
     staff_id: string,
 }
   
-interface DeletingStaffCondition {
+export interface DeletingStaffCondition {
     staff_id: string,
 };
   
-interface UpdatingAvatarStaffInfo {
+export interface UpdatingAvatarStaffInfo {
     avatarFile: Buffer,
 };
   
-interface UpdatingPasswordsInfo {
+export interface UpdatingPasswordsInfo {
     new_password: string,
     confirm_password: string
 };
   
-interface FindingAvatarCondition {
+export interface FindingAvatarCondition {
     staff_id: string,
 }
   
@@ -877,18 +896,18 @@ class StaffsOperation {
 
 	constructor() {
 		// this.baseUrl = "https://tdlogistics.govt.hu/api/v1/staffs";
-		this.baseUrl = "http://localhost:5000/api/v1/staffs";
+		this.baseUrl = "http://localhost:4000/api/v1/staffs";
 	}
 
 	// ROLE: any
 	async getAuthenticatedStaffInfo() {
         try {
-            const response: AxiosResponse = await axios.post(`${this.baseUrl}/get_info`, {
+            const response: AxiosResponse = await axios.get(`${this.baseUrl}/get_info`, {
                 withCredentials: true,
             });
             
             const data = response.data;
-            return { error: data.error, data: data.data, message: data.message };
+            return { error: data.error, data: data.info, message: data.message };
         } catch (error: any) {
             console.log("Error get authenticated staff information: ", error.response.data);
             return error.response.data;
@@ -934,7 +953,7 @@ class StaffsOperation {
 			});
 			
 			const data = response.data;
-			return { error: data.error, data: data.data, message: data.message };
+			return { error: data.error, message: data.message };
 		} 
 		catch (error: any) {
 			console.log("Error create new staff: ", error.response.data);
@@ -950,7 +969,7 @@ class StaffsOperation {
 			});
 			
 			const data = response.data;
-			return { error: data.error, data: data.data, message: data.message };
+			return { error: data.error, message: data.message };
 		} 
 		catch (error: any) {
 			console.log("Error create new staff: ", error.response.data);
@@ -966,7 +985,7 @@ class StaffsOperation {
 			});
 			
 			const data = response.data;
-			return { error: data.error, data: data.data, message: data.message };
+			return { error: data.error, message: data.message };
 		} 
 		catch (error: any) {
 			console.log("Error create new staff: ", error.response.data);
@@ -977,7 +996,7 @@ class StaffsOperation {
 	// ROLE: ADMIN, MANAGER, HUMAN_RESOURCE_MANAGER, AGENCY_MANAGER, AGENCY_HUMAN_RESOURCE_MANAGER
 	async deleteStaff(condition: DeletingStaffCondition) {
 		try {
-			const response = await axios.post(`${this.baseUrl}/delete?staff_id=${condition.staff_id}`, {
+			const response = await axios.delete(`${this.baseUrl}/delete?staff_id=${condition.staff_id}`, {
 				withCredentials: true,
 			});
 
@@ -1010,6 +1029,20 @@ class StaffsOperation {
 			throw error; // Ném lỗi để xử lý bên ngoài
 		}   
 	}
+
+    async logout() {
+        try {
+            const response: AxiosResponse = await axios.get(`${this.baseUrl}/logout`, {
+                withCredentials: true,
+            });
+
+            const data = response.data;
+            return { error: data.error, message: data.message };
+        } catch (error: any) {
+            console.log("Error logging out: ", error.response.data);
+            return error.response.data;
+        }
+    }
 
 	// ROLE: any. But one staff can just change his/her own password.
 	// So that, the staff_id in session must be the same with the staff_id in the query. 
@@ -1044,7 +1077,7 @@ class StaffsOperation {
 	}
 }
   
-interface CreateBusinessByAgencyInfo {
+export interface CreateBusinessByAgencyInfo {
 	// Representor information
     user_fullname: string,
     user_phone_number: string,
@@ -1073,7 +1106,7 @@ interface CreateBusinessByAgencyInfo {
     bank: string,
 }
   
-interface CreateBusinessByAdminInfo {
+export interface CreateBusinessByAdminInfo {
 	// Representor information
     username: string,
     password: string,
@@ -1103,11 +1136,11 @@ interface CreateBusinessByAdminInfo {
     bank: string,
 }
   
-interface FindingBusinessByBusinessCondition {
+export interface FindingBusinessByBusinessCondition {
     business_id: string,
 }
   
-interface FindingBusinessByAdminCondition {
+export interface FindingBusinessByAdminCondition {
 	business_id: string,
 	agency_id: string,
 	username: string,
@@ -1122,11 +1155,11 @@ interface FindingBusinessByAdminCondition {
 	bank: string,
 }
   
-interface FindingRepresentorByBusinessCondition {
+export interface FindingRepresentorByBusinessCondition {
     business_id: string,
 }
   
-interface FindingRepresentorByAdminCondition {
+export interface FindingRepresentorByAdminCondition {
 	agency_id:string,
 	business_id: string,
 	fullname: string,
@@ -1141,15 +1174,15 @@ interface FindingRepresentorByAdminCondition {
 	bank: string,
 }
   
-interface CheckingExistBusinessCondition {
+export interface CheckingExistBusinessCondition {
     tax_number: string,
 }
   
-interface UpdatingBusinessCondition {
+export interface UpdatingBusinessCondition {
     business_id: string,
 }
   
-interface UpdatingBusinessInfo {
+export interface UpdatingBusinessInfo {
 	business_name: string,
 	email: string,
 	phone_number: string,
@@ -1162,7 +1195,7 @@ interface UpdatingBusinessInfo {
 	bank: string,
 }
   
-interface UpdatingBusinessRepresentorInfo {
+export interface UpdatingBusinessRepresentorInfo {
 	fullname: string,
 	phone_number: string,
 	email: string,
@@ -1176,16 +1209,16 @@ interface UpdatingBusinessRepresentorInfo {
 	bank: string,
 }
   
-interface DeletingBusinessCondition {
+export interface DeletingBusinessCondition {
 	business_id: string,
 	agency_id: string,
 }
   
-interface UpdatingContractInfo {
+export interface UpdatingContractInfo {
     contractFile: Buffer,
 }
   
-interface FindingContractCondition {
+export interface FindingContractCondition {
     business_id: string,
 }
   
@@ -1194,7 +1227,7 @@ class BusinessOperation {
 
 	constructor() {
 		// this.baseUrl = "https://tdlogistics.govt.hu/api/v1/business";
-		this.baseUrl = "http://localhost:5000/api/v1/business";
+		this.baseUrl = "http://localhost:4000/api/v1/business";
 
 	}
 
@@ -1317,7 +1350,7 @@ class BusinessOperation {
 			});
 
 			const data = response.data;
-			return { error: data.error, message: data.message };
+			return { error: data.error, existed: data.existed, message: data.message };
 		} catch (error: any) {
 			console.log("Error checking exist business: ", error.response.data);
 			return error.response.data;
@@ -1373,7 +1406,7 @@ class BusinessOperation {
 	}
 }
 
-interface CreatingPartnerStaffInfo {
+export interface CreatingPartnerStaffInfo {
 	partner_id: string,
 	username: string,
 	password: string,
@@ -1392,11 +1425,11 @@ interface CreatingPartnerStaffInfo {
 	bank: string,
 }
 
-interface FindingPartnerStaffByPartnerStaffCondition {
+export interface FindingPartnerStaffByPartnerStaffCondition {
 	staff_id: string,
 }
 
-interface FindingPartnerStaffsByPartnerCondtions {
+export interface FindingPartnerStaffsByPartnerCondtions {
 	partner_id: string,
 	agency_id: string,
 	staff_id: string,
@@ -1414,7 +1447,7 @@ interface FindingPartnerStaffsByPartnerCondtions {
 	bank: string,
 }
 
-interface FindingPartnerStaffsByAdminConditions {
+export interface FindingPartnerStaffsByAdminConditions {
 	partner_id: string,
 	agency_id: string,
 	staff_id: string,
@@ -1431,11 +1464,11 @@ interface FindingPartnerStaffsByAdminConditions {
 	bank: string,
 }
 
-interface UpdatingPartnerStaffCondition {
+export interface UpdatingPartnerStaffCondition {
 	staff_id: string,
 }
 
-interface UpdatingPartnerStaffInfo {
+export interface UpdatingPartnerStaffInfo {
 	fullname: string,
 	username: string,
 	date_of_birth: string, 
@@ -1450,11 +1483,11 @@ interface UpdatingPartnerStaffInfo {
 	bank: string,
 }
 
-interface DeletingPartnerStaffCondition {
+export interface DeletingPartnerStaffCondition {
 	staff_id: string,
 }
 
-interface CheckingExistPartnerStaffCondition {
+export interface CheckingExistPartnerStaffCondition {
 	username: string,
 	email: string,
 	phone_number: string,
@@ -1463,16 +1496,16 @@ interface CheckingExistPartnerStaffCondition {
 }
 
 
-interface UpdatingPartnerLicenseImg {
+export interface UpdatingPartnerLicenseImg {
 	license_before: Buffer,
 	license_after: Buffer,
 }
 
-interface UpdatingPartnerStaffAvatarInfo {
+export interface UpdatingPartnerStaffAvatarInfo {
 	avatarFile: Buffer
 }
 
-interface FindingPartnerAvatarAndLicenseCondition {
+export interface FindingPartnerAvatarAndLicenseCondition {
 	staff_id: string
 };
   
@@ -1481,7 +1514,7 @@ class PartnerStaffOperation {
 
 	constructor() {
 		// this.baseUrl = "https://tdlogistics.govt.hu/api/v1/partner_staffs";
-		this.baseUrl = "http://localhost:5000/api/v1/partner_staffs";
+		this.baseUrl = "http://localhost:4000/api/v1/partner_staffs";
 	}
 
 	// ROLE: PARTNER_DRIVER, PARTNER_SHIPPER
@@ -1582,7 +1615,7 @@ class PartnerStaffOperation {
 			});
 
 			const data = response.data;
-			return { error: data.error, message: data.message };
+			return { error: data.error, existed: data.existed, message: data.message };
 		} catch (error: any) {
 			console.log("Error checking exist partner staff: ", error.response.data);
 			return error.response.data;
@@ -1709,22 +1742,22 @@ class PartnerStaffOperation {
 	} 
 }
   
-interface GettingTasksCondition {
+export interface GettingTasksCondition {
 	option: number,
 }
 
-interface ConfirmingCompletedTaskInfo {
+export interface ConfirmingCompletedTaskInfo {
 	id: number,
 }
 
-interface GettingHistoryInfo {
+export interface GettingHistoryInfo {
 	option: number,
 }
 
 class ShippersOperation {
 	private baseUrl: string;
 	constructor() {
-		this.baseUrl = "http://localhost:5000/api/v1/shippers";
+		this.baseUrl = "http://localhost:4000/api/v1/shippers";
 	}
 
 	async getTask(condition: GettingTasksCondition) {
@@ -1770,6 +1803,321 @@ class ShippersOperation {
 	}
 }
 
+//Shipment Operation
+export interface CreatingShipmentInfo {
+    transport_partner_id?: string
+}
+
+export interface FindingShipmentConditions {
+    shipment_id?: string,
+    tranport_partner_id?: string,
+    staff_id?: string
+}
+
+export interface DecomposingShipmentInfo {
+    order_ids: object
+}
+
+export interface OperatingWithOrderInfo {
+    order_ids: object
+}
+
+export interface ShipmentID {
+    shipment_id: string
+}
+
+export interface UndertakingShipmentInfo {
+    shipment_id: string,
+    status_code: number
+}
+
+class ShipmentsOperation {
+    private baseUrl: string;
+	constructor() {
+        // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/shipments";
+		this.baseUrl = "http://localhost:4000/api/v1/shipments";
+	}
+
+    // ROLE: ADMIN, MANAGER, TELLER, AGENCY_MANAGER, AGENCY_TELLER
+	async create(info: CreatingShipmentInfo) {
+		try {
+			const response = await axios.post(`${this.baseUrl}/create`, info, {
+				withCredentials: true,
+			});
+
+			const data = response.data;
+			return { error: data.error, message: data.message };
+		} catch (error: any) {
+			console.log("Error creating partner staff: ", error.response.data);
+			return error.response.data;
+		}
+	}
+
+    async getOrdersFromShipment(condition: ShipmentID) {
+        try {
+			const response = await axios.post(`${this.baseUrl}/get_orders?shipment_id=${condition.shipment_id}`, {
+				withCredentials: true,
+			});
+
+			const data = response.data;
+			return { error: data.error, message: data.message };
+		} catch (error: any) {
+			console.log("Error getting orders from shipment: ", error.response.data);
+			return error.response.data;
+		}
+    }
+
+    // ROLE: ADMIN, MANAGER, TELLER, AGENCY_MANAGER, AGENCY_TELLER
+    async addOrdersToShipment(condition: ShipmentID, info: OperatingWithOrderInfo) {
+        try {
+			const response = await axios.post(`${this.baseUrl}/add_orders?shipment_id=${condition.shipment_id}`, info, {
+				withCredentials: true,
+			});
+
+			const data = response.data;
+			return { error: data.error, message: data.message };
+		} catch (error: any) {
+			console.log("Error adding orders to shipment: ", error.response.data);
+			return error.response.data;
+		}
+    }
+
+    // ROLE: ADMIN, MANAGER, TELLER, AGENCY_MANAGER, AGENCY_TELLER
+    async deleteOrderFromShipment(condition: ShipmentID, info: OperatingWithOrderInfo) {
+        try {
+			const response = await axios.post(`${this.baseUrl}/remove_orders?shipment_id=${condition.shipment_id}`, info, {
+				withCredentials: true,
+			});
+
+			const data = response.data;
+			return { error: data.error, message: data.message };
+		} catch (error: any) {
+			console.log("Error deleting order from shipment: ", error.response.data);
+			return error.response.data;
+		}
+    }
+
+    // ROLE: AGENCY_MANAGER, AGENCY_TELLER
+    async confirmCreate(condition: ShipmentID) {
+        try {
+			const response = await axios.post(`${this.baseUrl}/confirm_create`, condition, {
+				withCredentials: true,
+			});
+
+			const data = response.data;
+			return { error: data.error, message: data.message };
+		} catch (error: any) {
+			console.log("Error confirming creat shipment: ", error.response.data);
+			return error.response.data;
+		}  
+    }
+
+    // ROLE: ADMIN, MANAGER, TELLER, AGENCY_MANAGER, AGENCY_TELLER
+    async get(condition: FindingShipmentConditions) {
+        try {
+			const response = await axios.post(`${this.baseUrl}/get`, condition, {
+				withCredentials: true,
+			});
+
+			const data = response.data;
+			return { error: data.error, data: data.data, message: data.message };
+		} catch (error: any) {
+			console.log("Error getting shipments: ", error.response.data);
+			return error.response.data;
+		} 
+    }
+
+    // ROLE: ADMIN, MANAGER, TELLER, AGENCY_MANAGER, AGENCY_TELLER
+    async delete(condition: ShipmentID) {
+        try {
+			const response = await axios.delete(`${this.baseUrl}/delete?shipment_id=${condition.shipment_id}`,{
+				withCredentials: true,
+			});
+
+			const data = response.data;
+			return { error: data.error, message: data.message };
+		} catch (error: any) {
+			console.log("Error deleting shipment: ", error.response.data);
+			return error.response.data;
+		} 
+    }
+
+    // ROLE: ADMIN, MANAGER, TELLER, AGENCY_MANAGER, AGENCY_TELLER
+    async decompose(condition: ShipmentID, info: DecomposingShipmentInfo) {
+        try {
+			const response = await axios.post(`${this.baseUrl}/decompose?shipment_id=${condition.shipment_id}`, info, {
+				withCredentials: true,
+			});
+
+			const data = response.data;
+			return { error: data.error, message: data.message };
+		} catch (error: any) {
+			console.log("Error decomposing shipment: ", error.response.data);
+			return error.response.data;
+		} 
+    }
+
+    // ROLE: AGENCY_MANAGER, AGENCY_TELLER
+    async receive(condition: ShipmentID) {
+        try {
+			const response = await axios.post(`${this.baseUrl}/receive`, condition, {
+				withCredentials: true,
+			});
+
+			const data = response.data;
+			return { error: data.error, message: data.message };
+		} catch (error: any) {
+			console.log("Error receiving shipment: ", error.response.data);
+			return error.response.data;
+		} 
+    }
+    
+    // ROLE: SHIPPER, AGENCY_SHIPPER, PARTNER_SHIPPER
+    async undertake(info: UndertakingShipmentInfo) {
+        try {
+			const response = await axios.post(`${this.baseUrl}/undertake`, info, {
+				withCredentials: true,
+			});
+
+			const data = response.data;
+			return { error: data.error, message: data.message };
+		} catch (error: any) {
+			console.log("Error undertaking shipment: ", error.response.data);
+			return error.response.data;
+		}
+    }
+}
+
+export interface CheckingExistOrderCondition {
+    order_id: string,
+}
+
+export interface GettingOrdersConditions {
+    name_receiver: string,
+    phone_receiver: string,
+    province_source: string,
+    district_source: string,
+    ward_source: string,
+    province_dest: string,
+    district_dest: string,
+    ward_dest: string,
+    service_type: string,
+}
+
+export interface CreatingOrderInformation {
+    name_receiver: string,
+    phone_receiver: string,
+    mass: string,
+    height: string,
+    width: string,
+    length: string,
+    province_source: string,
+    district_source: string,
+    ward_source: string,
+    detail_source: string,
+    province_dest: string,
+    district_dest: string,
+    ward_dest: string,
+    detail_dest: string,
+    long_source: number,
+    lat_source: number,
+    long_destination: number,
+    lat_destination: number,
+    COD: number,
+    service_type: number,
+}
+
+export interface UpdatingOrderCondition {
+    order_id: string,
+}
+
+export interface UpdatingOrderInfo {
+    mass: number,
+    height: number,
+    width: number,
+    length: number,
+    long_source: number,
+    lat_source: number,
+    long_destination: number,
+    lat_destination: number,
+    COD: number,
+}
+
+export interface CancelingOrderCondition {
+    order_id: string,
+}
+
+class OrdersOperation {
+    private baseUrl: string;
+    constructor() {
+        this.baseUrl = "http://localhost:4000/api/v1/orders";
+    }
+
+    async get(conditions: GettingOrdersConditions) {
+        try {
+            const response: AxiosResponse = await axios.post(`${this.baseUrl}/search`, conditions, {
+                withCredentials: true,
+            });
+
+            const data = response.data;
+            return { error: data.error, data: data.data, message: data.message };
+        } catch (error: any) {
+            console.log("Error getting orders: ", error.response.data);
+            return error.response.data;
+        }
+    }
+
+    async checkExist(condition: CheckingExistOrderCondition) {
+        try {
+            const response: AxiosResponse = await axios.get(`${this.baseUrl}/check?order_id=${condition.order_id}`, {
+                withCredentials: true,
+            });
+
+            const data = response.data;
+            return { error: data.error, exist: data.existed, message: data.message };
+        } catch (error: any) {
+            console.log("Error checking exist order: ", error.response.data);
+            return error.response.data;
+        }
+    }
+
+    // async create(info: CreatingOrderInformation) {
+    //     try {
+    //         socket.emit("notifyNewOrderFromUser", info)
+    //     } catch (error: any) {
+    //         console.log("Error creating new order: ", error);
+    //     }
+    // }
+
+    async update(info: UpdatingOrderInfo, condition: UpdatingOrderCondition) {
+        try {
+            const response: AxiosResponse = await axios.put(`${this.baseUrl}/update?order_id=${condition.order_id}`, info, {
+                withCredentials: true,
+            });
+
+            const data = response.data;
+            return { error: data.error, message: data.message };
+        } catch (error: any) {
+            console.log("Error updating order: ", error.response.data);
+            return error.response.data;
+        }
+    }
+
+    async cancel(condition: CancelingOrderCondition) {
+        try {
+            const response: AxiosResponse = await axios.delete(`${this.baseUrl}/cancel?order_id=${condition.order_id}`, {
+                withCredentials: true,
+            });
+
+            const data = response.data;
+            return { error: data.error, message: data.message };
+        } catch (error: any) {
+            console.log("Error canceling order: ", error.response.data);
+            return error.response.data;
+        }
+    }
+}
+
 export {
 	UsersAuthenticate,
 	StaffsAuthenticate,
@@ -1781,4 +2129,6 @@ export {
 	BusinessOperation,
 	PartnerStaffOperation,
 	ShippersOperation,
+    ShipmentsOperation,
+    OrdersOperation,
 }

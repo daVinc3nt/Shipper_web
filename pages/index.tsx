@@ -6,6 +6,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 const Home: NextPage = () => {
   return (
     <>
+    <LogForm/>
     </>
   );
 };

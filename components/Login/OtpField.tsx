@@ -1,15 +1,15 @@
 import React, { FC, useState, useRef, useEffect} from "react";
 import { useRouter } from 'next/router'
-import { User, OTP } from "./LoginPage/fetching"
 import { FormattedMessage } from "react-intl";
+import { StaffsAuthenticate } from "@/TDLib/tdlogistics";
 interface OptFieldProps {
     showOtp: boolean;
     setshowOtp: React.Dispatch<React.SetStateAction<boolean>>;
-    user: User;
-    otp: OTP;
+    phone: string;
+    mail: string;
   }
 let currentOTPIndex: number = 0;
-const OTPField: FC<OptFieldProps> = ({showOtp, setshowOtp, user, otp}) => {
+const OTPField: FC<OptFieldProps> = ({showOtp, setshowOtp, phone, mail}) => {
     const [otp1, setOtp] = useState<string[]>(new Array(4).fill(""));
     const [activeOTPIndex, setActiveOTPIndex] = useState<number>(0);
     const inputRef = useRef<HTMLInputElement>(null)
@@ -26,7 +26,6 @@ const OTPField: FC<OptFieldProps> = ({showOtp, setshowOtp, user, otp}) => {
        ): void => {
         const { value } = target;
         if (value && value !=="0" &&!Number(value)) {
-            console.log(!Number(value));
             return;
         }
         const newOTP: string[] = [...otp1];
@@ -38,8 +37,9 @@ const OTPField: FC<OptFieldProps> = ({showOtp, setshowOtp, user, otp}) => {
         if ( otp1.some((element) => element !== "") )
         {
             console.log("bắt đầu check");
-            let CheckOtp = parseFloat(otp1.join(""));
-            otp.verifyOTP({phone_number: user.phone_number, otp: CheckOtp })
+            let CheckOtp = otp1.join("");
+            const staffsAuthenticate= new StaffsAuthenticate()
+            staffsAuthenticate.verifyOTP(phone, mail, CheckOtp )
             .then(valid => {
                 if (!valid) {
                     return console.log("OTP không hợp lệ. Vui lòng thử lại!");
