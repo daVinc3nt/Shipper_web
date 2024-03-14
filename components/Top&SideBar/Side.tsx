@@ -8,6 +8,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import Item from "./ForSideBar/Item";
 import SubItems from "./ForSideBar/SubItems"; 
 import { LogoutOutlined, KeyboardDoubleArrowLeft }from '@mui/icons-material';
+import { Logout } from "./ForSideBar/Logout";
 interface MyComponentProps {
   toggleCollapseMobile: boolean;
 }
@@ -140,7 +141,9 @@ export default function Side({menuItems, toggleCollapseMobile }) {
       </div>
 
       <div className={`${getNavItemClasses({})}`}>
-        <div className="flex py-4 px-3 items-center w-full h-full text-[#545e7b] hover:bg-black hover:text-[#e1201c]">
+      <button
+        onClick={Logout} 
+        className="flex py-4 px-3 items-center w-full h-full text-[#545e7b] hover:bg-black hover:text-[#e1201c]">
           <div style={ !toggleCollapse? { width: "2.5rem" }: { width: "0rem" }}>
             <LogoutOutlined />
           </div>
@@ -150,10 +153,10 @@ export default function Side({menuItems, toggleCollapseMobile }) {
                 "text-lg font-medium "
               )}
             >
-              <FormattedMessage id="Sidebar.option11"/>
+              <FormattedMessage id="Sidebar.option3"/>
             </span>
           )}
-        </div>
+      </button>
       </div>
     </div>
     
@@ -210,7 +213,9 @@ export default function Side({menuItems, toggleCollapseMobile }) {
       </div>
 
       <div className={`${getNavItemClasses({})}`}>
-        <div className="flex py-4 px-3 items-center w-full h-full text-[#545e7b] hover:bg-black hover:text-[#e1201c]">
+        <button
+        onClick={Logout} 
+        className="flex py-4 px-3 items-center w-full h-full text-[#545e7b] hover:bg-black hover:text-[#e1201c]">
           {!toggleCollapseMobile && <div style={ { width: "2.5rem" }}>
             <LogoutOutlined />
           </div>}
@@ -220,10 +225,10 @@ export default function Side({menuItems, toggleCollapseMobile }) {
                 "text-md font-medium"
               )}
             >
-             <FormattedMessage id="Sidebar.option11"/>
+             <FormattedMessage id="Sidebar.option3"/>
             </span>
           )}
-        </div>
+           </button>
       </div>
     </div>
     </>

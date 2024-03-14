@@ -71,7 +71,7 @@ module.exports = {
       backgroundImage: {
         RedGradient:
             'linear-gradient(to top, #890010, #990012)',
-        LoginRedGradient:
+        DarkRedGradient:
             'linear-gradient(to left, #E65758, #771D32)', 
         LitghRedGradient:
             'linear-gradient(-45deg, #ff5959, #ff4040, #ff0d6e, #ff8033,#d74177)',
