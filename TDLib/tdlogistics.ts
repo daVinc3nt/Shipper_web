@@ -2036,10 +2036,6 @@ export interface UpdatingOrderInfo {
     height: number,
     width: number,
     length: number,
-    long_source: number,
-    lat_source: number,
-    long_destination: number,
-    lat_destination: number,
     COD: number,
 }
 

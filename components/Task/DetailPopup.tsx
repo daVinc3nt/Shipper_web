@@ -17,10 +17,6 @@ interface UpdatingOrderInfo {
     height: number,
     width: number,
     length: number,
-    long_source: number,
-    lat_source: number,
-    long_destination: number,
-    lat_destination: number,
     COD: number,
 }
 interface DetailPopupProps {
@@ -86,15 +82,11 @@ const DetailPopup: React.FC<DetailPopupProps> = ({ onClose, dataInitial, reloadD
             const confirmed = window.confirm(intl.formatMessage({ id: 'Mission.Detail.Alert2' }));
             if (confirmed) {
                 let updatingOrderInfo: UpdatingOrderInfo = {
-                    mass: data.mass, //phải chuyển về float không để string
-                    height: data.height, //phải chuyển về float không để string
-                    width: data.width, //phải chuyển về float không để string
-                    length: data.length, //phải chuyển về float không để string
-                    long_source: data.long_source, //KHÔNG cho phép gửi
-                    lat_source: data.lat_lat_source, //KHÔNG cho phép gửi
-                    long_destination: data.long_destination, //KHÔNG cho phép gửi
-                    lat_destination: data.lat_destination, //KHÔNG cho phép gửi
-                    COD: data.COD,  //cho phép gửi COD
+                    mass: parseFloat(data.mass), //phải chuyển về float không để string
+                    height: parseFloat(data.height), //phải chuyển về float không để string
+                    width: parseFloat(data.width), //phải chuyển về float không để string
+                    length: parseFloat(data.length), //phải chuyển về float không để string
+                    COD: parseFloat(data.COD),  //cho phép gửi COD
                 };
 
                 let updatingOrderCondition: UpdatingOrderCondition = {
