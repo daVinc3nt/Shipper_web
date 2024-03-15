@@ -45,14 +45,6 @@ const SigninForm = () => {
 
 
 
-  const handleEmail = async (change: string) => {
-    const value = change;
-    const updatedFormValues = { ...formValues, email: value };
-    setFormValues(updatedFormValues);
-    validate(updatedFormValues, 2);
-  };
-
-
 
 
 
@@ -70,10 +62,6 @@ const SigninForm = () => {
     validate(updatedFormValues, 1);
   };
 
-
-
-
-
   const signIn = async () =>{
     const {name, pass} = formValues;
     const {nameEr, passEr} = formErrors;
@@ -84,7 +72,6 @@ const SigninForm = () => {
     if (nameEr || passEr) {setshake(true); return}
       await adAuth();
   } 
-
   const adAuth = async () =>
   {
     const {name, pass} = formValues;
@@ -99,19 +86,6 @@ const SigninForm = () => {
     setInfo(res.data);
     router.push("/dashboard")
   }
-  const staffAuth =() => {
-    const {email, phoneNumber} = formValues;
-    const staffsAuthenticate = new StaffsAuthenticate();
-    if (!email || !phoneNumber)
-      return null;
-    // Send OTP
-    staffsAuthenticate.sendOTP(email, phoneNumber)
-    .then(message => console.log(message))
-    .catch(error => console.log(error)).then(()=>{router.push("/dashboard")});
-  }
-
-
-
   const validate = (values: FormValues, type: number)=> {
     var errors: string = "";
     // const NameRegex =/^([a-vxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđ]+)((\s{1}[a-vxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđ]+){1,})$/i;
@@ -169,9 +143,9 @@ const SigninForm = () => {
                   </div>
                   <div className="mt-5 sm:mt-10 relative">
                     <input
-                      type="tel"
+                      type="text"
                       className=" peer h-10 w-full border-b-2 bg-white border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:border-indigo-600"
-                      placeholder="Số điện thoại"
+                      placeholder="Passwords"
                       onChange={(e) => handlePass(e.target.value)} 
                     />
                     <label
