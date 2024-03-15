@@ -9,7 +9,7 @@ async function getData(option: number) {
 
 export default async function DemoPage(reloadData) {
   const data = await getData(0);
-  console.log(data)
+  console.log("hello",data)
 
   return <DataTable columns={columns} data={data.data} reloadData={reloadData} />;
 }

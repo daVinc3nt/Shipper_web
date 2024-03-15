@@ -19,13 +19,13 @@ const SideItemData = [
   {
     id: 1,
     title: <FormattedMessage id="Sidebar.option1" />,
-    url: "/dashboard/History",
+    url: "/dashboard/history",
     icon: <ReceiptLong className="scale-75 lg:block" />,
   },
   {
     id: 2,
     title: <FormattedMessage id="Sidebar.option2" />,
-    url: "/dashboard/consignment",
+    url: "/dashboard/task",
     icon: <Inventory className="scale-75 lg:block" />,
   },
 ];

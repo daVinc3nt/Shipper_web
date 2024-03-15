@@ -11,8 +11,18 @@
     "Detail/Edit": "Chi tiết/Sửa",
     "History.Title": "Lịch sử đơn hàng",
     "History.Search": "Tìm kiếm theo ngày giao thành công",
+    "signin.username":"Tên tài khoản",
+    "signin.password":"Mật khẩu",
+    "signin.verify":"Xác thực",
+    "signin.wish":"May mắn nhé!",
+    "signin.support":"TDlogistics.",
+    "signin.welcome": "Chào bạn",
+
+
     "Sidebar.option1": "Giao nhận đơn",
     "Sidebar.option2": "Lịch sử",
+    "Sidebar.option3": "Thoát",
+
     "Mission.OrderCode": "Mã đơn hàng",
     "Mission.ReceiveLocation": "Địa chỉ nhận hàng",
     "Mission.DeliveryLocation": "Địa chỉ giao hàng",

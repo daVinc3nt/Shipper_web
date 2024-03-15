@@ -7,18 +7,60 @@ import * as en from "@/lang/en.json";
 import * as vi from "@/lang/vi.json";
 import { Libraries, LoadScript, LoadScriptProps } from "@react-google-maps/api";
 import { Spinner } from "@material-tailwind/react";
+import {useState, useEffect} from "react"
+import { StaffsOperation } from "@/TDLib/tdlogistics";
+import Cookies from "js-cookie";
+import { UserContext } from "@/context/InfoContext/UserContext";
 
-
+const staff = new StaffsOperation
 const googleMapsLibraries: Libraries = ["places"];
 
 function MyApp({ Component, pageProps }: AppProps) {
   const { locale } = useRouter();
+  const [info, setInfo] = useState(null);
+  const router = useRouter();
+  const [value, setValue] = useState(false);
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await staff.getAuthenticatedStaffInfo();
+      if (res)
+      {
+        if (res.data?.role !== "AGENCY_SHIPPER")
+          {
+            Cookies.remove("connect.sid")
+          }
+        setInfo(res.data);
+      }
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setValue((prevValue) => !prevValue);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    console.log("cái này dùng để check xem còn cookie không");
+    if (!Cookies.get("connect.sid")) {
+      if (router.pathname != "/log" && router.pathname != "/") {
+        router.push("/log");
+      }
+    }
+  }, [value]);
+
+  useEffect(() => {
+    console.log(info);
+  }, [info]);
   const messages = {
     vi,
     en,
   };
   return (
     <>
+    <UserContext.Provider value={{info, setInfo}}>
       <IntlProvider locale={locale} messages={messages[locale]}>
         <LoadScript
           language={locale}
@@ -31,6 +73,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           </Wrapper>
         </LoadScript>
       </IntlProvider>
+    </UserContext.Provider>
     </>
   );
 }
