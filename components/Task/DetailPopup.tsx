@@ -86,15 +86,15 @@ const DetailPopup: React.FC<DetailPopupProps> = ({ onClose, dataInitial, reloadD
             const confirmed = window.confirm(intl.formatMessage({ id: 'Mission.Detail.Alert2' }));
             if (confirmed) {
                 let updatingOrderInfo: UpdatingOrderInfo = {
-                    mass: data.mass,
-                    height: data.height,
-                    width: data.width,
-                    length: data.length,
-                    long_source: data.long_source,
-                    lat_source: data.lat_lat_source,
-                    long_destination: data.long_destination,
-                    lat_destination: data.lat_destination,
-                    COD: data.COD,
+                    mass: data.mass, //phải chuyển về float không để string
+                    height: data.height, //phải chuyển về float không để string
+                    width: data.width, //phải chuyển về float không để string
+                    length: data.length, //phải chuyển về float không để string
+                    long_source: data.long_source, //KHÔNG cho phép gửi
+                    lat_source: data.lat_lat_source, //KHÔNG cho phép gửi
+                    long_destination: data.long_destination, //KHÔNG cho phép gửi
+                    lat_destination: data.lat_destination, //KHÔNG cho phép gửi
+                    COD: data.COD,  //cho phép gửi COD
                 };
 
                 let updatingOrderCondition: UpdatingOrderCondition = {

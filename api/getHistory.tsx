@@ -1,6 +1,6 @@
 import { ShippersOperation } from "@/TDLib/tdlogistics";
-import { columns } from "../components/history/Table/column";
-import { DataTable } from "../components/history/Table/datatable";
+import { columns } from "../components/History/Table/column";
+import { DataTable } from "../components/History/Table/datatable";
 async function getData(option: number) {
   const histories = new ShippersOperation();
   const data = await histories.getHistory({ option: option });
