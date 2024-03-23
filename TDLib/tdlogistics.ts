@@ -1,24 +1,27 @@
 import axios, { AxiosResponse } from "axios";
 import { io } from 'socket.io-client';
+import * as JSZip from 'jszip';
 const FormData = require("form-data");
 
-// const socket = io("http://localhost:5000");
+const socket = io("http://localhost:5000", {
+    withCredentials: true,
+});
 
-// socket.on("connect", () => {
-//     console.log("Connected to server.");
-// });
+socket.on("connect", () => {
+    console.log("Connected to server.");
+});
 
-// socket.on("notifyError", message => {
-//     // showing custome notification on UI
-// });
+socket.on("notifyError", message => {
+    // showing custome notification on UI
+});
 
-// socket.on("notifySuccessCreatedNewOrder", message => {
-//     // showing custome notification on UI
-// });
+socket.on("notifySuccessCreatedNewOrder", message => {
+    // showing custome notification on UI
+});
 
-// socket.on("notifyFailCreatedNewOrder", message => {
-//     // showing custome notification on UI
-// });
+socket.on("notifyFailCreatedNewOrder", message => {
+    // showing custome notification on UI
+});
 
 class UsersAuthenticate {
     private baseUrl: string;
@@ -590,7 +593,7 @@ export interface CreatingVehicleByAdminInfo {
     staff_id: string,
     type: string,
     license_plate: string,
-    max_load: string,
+    max_load: number,
 }
 
 export interface CreatingVehicleByAgencyInfo {
@@ -598,7 +601,7 @@ export interface CreatingVehicleByAgencyInfo {
     staff_id: string,
     type: string,
     license_plate: string,
-    max_load: string,
+    max_load: number,
 }
 
 export interface FindingVehicleByStaffCondition {
@@ -611,10 +614,10 @@ export interface FindingVehicleByAdminConditions {
     staff_id: string,
     type: string,
     license_plate: string,
-    mass: string,
+    mass: number,
 }
 
-export interface GettingOrdersContainedByVehicleCondition {
+export interface GettingShipmentsContainedByVehicleCondition {
     vehicle_id: string,
 }
 
@@ -622,27 +625,26 @@ export interface UpdatingVehicleInfo {
     transport_partner_id: string,
     staff_id: string,
     type: string,
-    license_plate: string,
-    max_load: string,
+    max_load: number,
 }
 
 export interface UpdatingVehicleCondition {
     vehicle_id: string,
 }
 
-export interface AddingOrdersToVehicleInfo {
-    order_ids: Object,
+export interface AddingShipmentsToVehicleInfo {
+    shipment_ids: Object,
 }
 
-export interface AddingOrdersToVehicleCondition {
+export interface AddingShipmentsToVehicleCondition {
     vehicle_id: string,
 }
 
-export interface DeletingOrdersFromVehicleInfo {
-    order_ids: Object,
+export interface DeletingShipmentsFromVehicleInfo {
+    shipment_ids: Object,
 }
 
-export interface DeletingOrdersFromVehicleCondition {
+export interface DeletingShipmentsFromVehicleCondition {
     vehicle_id: string,
 }
 
@@ -650,12 +652,12 @@ export interface DeletingVehicleCondition {
     vehicle_id: string,
 }
 
-class Vehicle {
+class VehicleOperation {
     private baseUrl: string;
 
     constructor() {
-        // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/vehicle";
-        this.baseUrl = "http://localhost:5000/api/v1/vehicle";
+        // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/vehicles";
+        this.baseUrl = "http://localhost:5000/api/v1/vehicles";
     }
 
     async checkExist(condition: CheckingExistVehicleCondition) {
@@ -707,7 +709,7 @@ class Vehicle {
             });
 
             const data = response.data;
-            return { error: data.error, message: data.message };
+            return { error: data.error, data: data.data, message: data.message };
         } catch (error: any) {
             console.log("Error finding vehicle: ", error.response.data);
             return error.response.data;
@@ -721,23 +723,23 @@ class Vehicle {
             });
 
             const data = response.data;
-            return { error: data.error, message: data.message };
+            return { error: data.error, data: data.data, message: data.message };
         } catch (error: any) {
             console.log("Error finding vehicle: ", error.response.data);
             return error.response.data;
         }
     }
 
-    async getOrders(condition: GettingOrdersContainedByVehicleCondition) {
+    async getShipment(condition: GettingShipmentsContainedByVehicleCondition) {
         try {
-            const response = await axios.post(`${this.baseUrl}/search_order_ids?vehicle_id=${condition.vehicle_id}`, {
+            const response = await axios.get(`${this.baseUrl}/get_shipments?vehicle_id=${condition.vehicle_id}`, {
                 withCredentials: true,
             });
 
             const data = response.data;
-            return { error: data.error, message: data.message };
+            return { error: data.error, data: data.data, message: data.message };
         } catch (error: any) {
-            console.log("Error getting orders contained by vehicle: ", error.response.data);
+            console.log("Error getting shipments contained by vehicle: ", error.response.data);
             return error.response.data;
         }
     }
@@ -745,49 +747,49 @@ class Vehicle {
 
     async update(info: UpdatingVehicleInfo, condition: UpdatingVehicleCondition) {
         try {
-            const response = await axios.post(`${this.baseUrl}/update?vehicle_id=${condition.vehicle_id}`, info, {
+            const response = await axios.put(`${this.baseUrl}/update?vehicle_id=${condition.vehicle_id}`, info, {
                 withCredentials: true,
             });
 
             const data = response.data;
             return { error: data.error, message: data.message };
         } catch (error: any) {
-            console.log("Error getting orders contained by vehicle: ", error.response.data);
+            console.log("Error updating vehicle: ", error.response.data);
             return error.response.data;
         }
     }
 
-    async addOrders(info: AddingOrdersToVehicleInfo, condition: AddingOrdersToVehicleCondition) {
+    async addShipments(info: AddingShipmentsToVehicleInfo, condition: AddingShipmentsToVehicleCondition) {
         try {
-            const response = await axios.post(`${this.baseUrl}/add_orders?vehicle_id=${condition.vehicle_id}`, info, {
+            const response = await axios.patch(`${this.baseUrl}/add_shipments?vehicle_id=${condition.vehicle_id}`, info, {
                 withCredentials: true,
             });
 
             const data = response.data;
-            return { error: data.error, message: data.message };
+            return { error: data.error, info: data.info, message: data.message };
         } catch (error: any) {
-            console.log("Error adding orders to vehicle: ", error.response.data);
+            console.log("Error adding shipments to vehicle: ", error.response.data);
             return error.response.data;
         }
     }
 
-    async deleteOrders(info: DeletingOrdersFromVehicleInfo, condition: DeletingOrdersFromVehicleCondition) {
+    async deleteShipments(info: DeletingShipmentsFromVehicleInfo, condition: DeletingShipmentsFromVehicleCondition) {
         try {
-            const response = await axios.post(`${this.baseUrl}/delete_orders?vehicle_id=${condition.vehicle_id}`, info, {
+            const response = await axios.patch(`${this.baseUrl}/delete_shipments?vehicle_id=${condition.vehicle_id}`, info, {
                 withCredentials: true,
             });
 
             const data = response.data;
-            return { error: data.error, message: data.message };
+            return { error: data.error, info: data.info, message: data.message };
         } catch (error: any) {
-            console.log("Error deleting orders from vehicle: ", error.response.data);
+            console.log("Error deleting shipments from vehicle: ", error.response.data);
             return error.response.data;
         }
     }
 
     async deleteVehicle(condition: DeletingVehicleCondition) {
         try {
-            const response = await axios.post(`${this.baseUrl}/delete?vehicle_id=${condition.vehicle_id}`, {
+            const response = await axios.delete(`${this.baseUrl}/delete?vehicle_id=${condition.vehicle_id}`, {
                 withCredentials: true,
             });
 
@@ -863,7 +865,7 @@ export interface UpdatingStaffInfo {
     phone_number: string,
     role: string,
     salary: number, 
-    paid_salary: number, 
+    paid_salary: string, 
     province: string,
     district: string,
     town: string,
@@ -1025,7 +1027,7 @@ class StaffsOperation {
 			return response.data; // Trả về dữ liệu phản hồi từ máy chủ
 	
 		} catch (error: any) {
-			console.error('Error uploading image:', error);
+			console.error('Error uploading image:', error.response.data);
 			throw error; // Ném lỗi để xử lý bên ngoài
 		}   
 	}
@@ -1062,19 +1064,28 @@ class StaffsOperation {
 	}
 
 	// ROLE: any.
-	async findAvatar (conditions: FindingAvatarCondition) {
-		try {
-			const response: AxiosResponse = await axios.post(`${this.baseUrl}/get_avatar`, conditions, {
-				withCredentials: true,
-			});
-
-			const data = response.data;
-			return { error: data.error, data: data.data, message: data.message };
-		} catch (error: any) {
-			console.log("Error finding partner staff: ", error.response.data);
-			return error.response.data;
-		}
-	}
+	async findAvatar(condition: FindingAvatarCondition) {
+        try {
+          const response: AxiosResponse = await axios.get(`${this.baseUrl}/get_avatar?staff_id=${condition.staff_id}`, {
+            withCredentials: true,
+            responseType: 'arraybuffer', // Use 'arraybuffer' for binary data (blob)
+          });
+      
+          // Convert the response data to a blob
+          const blob = new Blob([response.data], { type: response.headers['content-type'] });
+      
+          // Create a blob URL for the image
+          const url = URL.createObjectURL(blob);
+      
+          // Now you can use 'url' to display the image or update the state in your React component
+      
+          const data = response.data;
+          return { error: data.error, data: data.data, message: data.message, imageUrl: url };
+        } catch (error: any) {
+          console.log("Error finding partner staff: ", error.response.data);
+          return { error: error.response.data, imageUrl: null }; // Return imageUrl as null in case of an error
+        }
+      }
 }
   
 export interface CreateBusinessByAgencyInfo {
@@ -1386,21 +1397,21 @@ class BusinessOperation {
 			return response.data; // Trả về dữ liệu phản hồi từ máy chủ
 	
 			} catch (error: any) {
-			console.error('Error uploading file:', error);
+			console.error('Error uploading file:', error.response.data);
 			throw error; // Ném lỗi để xử lý bên ngoài
 			} 
 	}
 
-	async findContract(conditions: FindingContractCondition) {
+	async findContract(condition: FindingContractCondition) {
 		try {
-			const response = await axios.post(`${this.baseUrl}/get_contract`, conditions, {
+			const response = await axios.get(`${this.baseUrl}/get_contract?business_id=${condition.business_id}`, {
 				withCredentials: true,
 			});
 
 			const data = response.data;
 			return { error: data.error, data: data.data, message: data.message };
 		} catch (error: any) {
-			console.log("Error finding partner staff: ", error.response.data);
+			console.log("Error finding contract: ", error.response.data);
 			return error.response.data;
 		}
 	}
@@ -1668,7 +1679,7 @@ class PartnerStaffOperation {
 			return response.data; // Trả về dữ liệu phản hồi từ máy chủ
 
 		} catch (error: any) {
-			console.error('Error uploading image:', error);
+			console.error('Error uploading image:', error.response.data);
 			throw error; // Ném lỗi để xử lý bên ngoài
 		}
 	}
@@ -1691,7 +1702,7 @@ class PartnerStaffOperation {
 			return response.data; // Trả về dữ liệu phản hồi từ máy chủ
 
 		} catch (error: any) {
-			console.error('Error uploading image:', error);
+			console.error('Error uploading image:', error.response.data);
 			throw error; // Ném lỗi để xử lý bên ngoài
 		}
 	}
@@ -1743,7 +1754,7 @@ class PartnerStaffOperation {
 }
   
 export interface GettingTasksCondition {
-	option: number,
+	option?: number,
 }
 
 export interface ConfirmingCompletedTaskInfo {
@@ -1751,7 +1762,7 @@ export interface ConfirmingCompletedTaskInfo {
 }
 
 export interface GettingHistoryInfo {
-	option: number,
+	option?: number,
 }
 
 class ShippersOperation {
@@ -1838,6 +1849,20 @@ class ShipmentsOperation {
 		this.baseUrl = "http://localhost:5000/api/v1/shipments";
 	}
 
+    async check(condition: ShipmentID) {
+        try {
+			const response = await axios.get(`${this.baseUrl}/check?shipment_id=${condition.shipment_id}`, {
+				withCredentials: true,
+			});
+
+			const data = response.data;
+			return { error: data.error, existed: data.existed, message: data.message };
+		} catch (error: any) {
+			console.log("Error checking exist shipment: ", error.response.data);
+			return error.response.data;
+		}
+    }
+
     // ROLE: ADMIN, MANAGER, TELLER, AGENCY_MANAGER, AGENCY_TELLER
 	async create(info: CreatingShipmentInfo) {
 		try {
@@ -1848,19 +1873,19 @@ class ShipmentsOperation {
 			const data = response.data;
 			return { error: data.error, message: data.message };
 		} catch (error: any) {
-			console.log("Error creating partner staff: ", error.response.data);
+			console.log("Error creating shipment: ", error.response.data);
 			return error.response.data;
 		}
 	}
 
     async getOrdersFromShipment(condition: ShipmentID) {
         try {
-			const response = await axios.post(`${this.baseUrl}/get_orders?shipment_id=${condition.shipment_id}`, {
+			const response = await axios.get(`${this.baseUrl}/get_orders?shipment_id=${condition.shipment_id}`, {
 				withCredentials: true,
 			});
 
 			const data = response.data;
-			return { error: data.error, message: data.message };
+			return { error: data.error, data: data.data, message: data.message };
 		} catch (error: any) {
 			console.log("Error getting orders from shipment: ", error.response.data);
 			return error.response.data;
@@ -1993,24 +2018,24 @@ export interface CheckingExistOrderCondition {
 }
 
 export interface GettingOrdersConditions {
-    name_receiver: string,
-    phone_receiver: string,
-    province_source: string,
-    district_source: string,
-    ward_source: string,
-    province_dest: string,
-    district_dest: string,
-    ward_dest: string,
-    service_type: string,
+    name_receiver?: string,
+    phone_receiver?: string,
+    province_source?: string,
+    district_source?: string,
+    ward_source?: string,
+    province_dest?: string,
+    district_dest?: string,
+    ward_dest?: string,
+    service_type?: number,
 }
 
 export interface CreatingOrderInformation {
     name_receiver: string,
-    phone_receiver: string,
-    mass: string,
-    height: string,
-    width: string,
-    length: string,
+    phone_number_receiver: string,
+    mass: number,
+    height: number,
+    width: number,
+    length: number,
     province_source: string,
     district_source: string,
     ward_source: string,
@@ -2031,6 +2056,14 @@ export interface UpdatingOrderCondition {
     order_id: string,
 }
 
+export interface UpdatingOrderImageInfo {
+    files: FileList,
+};
+
+export interface UpdatingOrderImageCondition {
+    order_id: string,
+    type: string
+}
 export interface UpdatingOrderInfo {
     mass: number,
     height: number,
@@ -2077,13 +2110,13 @@ class OrdersOperation {
         }
     }
 
-    // async create(info: CreatingOrderInformation) {
-    //     try {
-    //         socket.emit("notifyNewOrderFromUser", info)
-    //     } catch (error: any) {
-    //         console.log("Error creating new order: ", error);
-    //     }
-    // }
+    async create(info: CreatingOrderInformation) {
+        try {
+            socket.emit("notifyNewOrderFromUser", info)
+        } catch (error: any) {
+            console.log("Error creating new order: ", error.response.data);
+        }
+    }
 
     async update(info: UpdatingOrderInfo, condition: UpdatingOrderCondition) {
         try {
@@ -2112,6 +2145,141 @@ class OrdersOperation {
             return error.response.data;
         }
     }
+
+    async updateImage(info: UpdatingOrderImageInfo, condition: UpdatingOrderCondition) {
+        try {       
+			// Tạo FormData object và thêm hình ảnh vào đó
+			const formData = new FormData();
+            for (let i = 0; i < info.files.length; i++) {
+                formData.append('files', info.files[i]);
+            }
+			// Gửi yêu cầu POST để tải lên hình ảnh
+			const response: AxiosResponse = await axios.post(`${this.baseUrl}/update_images?order_id=${condition.order_id}&type=send`, formData , {
+				withCredentials: true,
+			});
+		
+			console.log('Image uploaded successfully:', response.data);
+			return response.data; // Trả về dữ liệu phản hồi từ máy chủ
+	
+		} catch (error: any) {
+			console.error('Error uploading image:', error.response.data);
+			throw error; // Ném lỗi để xử lý bên ngoài
+		} 
+    }
+    //get_images
+    async getImage(condition: UpdatingOrderCondition) {
+        try {
+            
+            const response: AxiosResponse = await axios.get(`${this.baseUrl}/get_images?order_id=${condition.order_id}&type=send`, {
+                responseType: 'arraybuffer', // Ensure response is treated as a binary buffer
+                withCredentials: true,
+            });
+            // const zip = new JSZip();
+            const zipFile = await JSZip.loadAsync(response.data);
+            const imageUrls: string[] = [];
+
+            // Extract each file from the ZIP archive and create object URLs
+            await Promise.all(
+                Object.keys(zipFile.files).map(async (filename) => {
+                    const file = zipFile.files[filename];
+                    const blob = await file.async('blob');
+                    const url = URL.createObjectURL(blob);
+                    imageUrls.push(url);
+                })
+            );
+
+            return imageUrls;
+        } catch (error: any) {
+			console.error('Error getting image:', error.message);
+			throw error; // Ném lỗi để xử lý bên ngoài
+		} 
+    }
+}
+
+export interface GettingTasksCondition {
+    task?: string,
+    priority?: number,
+    deadline?: string,
+    completed?: boolean,
+}
+
+export interface CreatingNewTaskInfo {
+    task: string,
+    priority: number,
+    deadline: string,
+}
+
+export interface UpdatingTaskInfo {
+    task: string,
+    priority: number,
+    completed: boolean,
+}
+
+export interface TaskId {
+    id: number,
+}
+
+class ScheduleOperation {
+    private baseUrl: string;
+    constructor() {
+        this.baseUrl = "http://localhost:5000/api/v1/schedules";
+    }
+
+    async get(conditions: GettingTasksCondition) {
+        try {
+            const response: AxiosResponse = await axios.post(`${this.baseUrl}/search`, conditions, {
+                withCredentials: true
+            });
+
+            const data = response.data;
+            return { error: data, data: data.data, message: data.message }
+        } catch (error: any) {
+            console.log("Error getting tasks: ", error.response.data);
+            return error.response.data;
+        }
+    }
+
+    async create(info: CreatingNewTaskInfo) {
+        try {
+            const response: AxiosResponse = await axios.post(`${this.baseUrl}/create`, info, {
+                withCredentials: true
+            });
+
+            const data = response.data;
+            return { error: data, message: data.message }
+        } catch (error: any) {
+            console.log("Error creating new tasks: ", error.response.data);
+            return error.response.data;
+        }
+    }
+
+    async update(info: UpdatingTaskInfo, condition: TaskId) {
+        try {
+            const response: AxiosResponse = await axios.put(`${this.baseUrl}/update?id=${condition.id}`, info, {
+                withCredentials: true
+            });
+
+            const data = response.data;
+            return { error: data, message: data.message }
+        } catch (error: any) {
+            console.log("Error updating tasks: ", error.response.data);
+            return error.response.data;
+        }
+    }
+
+    async deleteTask(condition: TaskId) {
+        try {
+            const response: AxiosResponse = await axios.delete(`${this.baseUrl}/delete?id=${condition.id}`, {
+                withCredentials: true
+            });
+
+            const data = response.data;
+            return { error: data, message: data.message }
+        } catch (error: any) {
+            console.log("Error deleting tasks: ", error.response.data);
+            return error.response.data;
+        }
+    }
 }
 
 export {
@@ -2121,10 +2289,11 @@ export {
 	AgencyOperation,
 	TransportPartnersOperation,
 	StaffsOperation,
-	Vehicle,
+	VehicleOperation,
 	BusinessOperation,
 	PartnerStaffOperation,
 	ShippersOperation,
     ShipmentsOperation,
     OrdersOperation,
+    ScheduleOperation,
 }

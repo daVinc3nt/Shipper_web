@@ -127,6 +127,53 @@ const DetailPopup: React.FC<DetailPopupProps> = ({ onClose, dataInitial, reloadD
         }
     };
 
+
+    //file submit
+    const [files, setFiles] = useState<FileList | null>(null);
+
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      if (event.target.files) {
+        setFiles(event.target.files);
+      }
+    };
+  
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+  
+      if (!files) {
+        alert('Please select at least one file.');
+        return;
+      }
+      let updatingOrderCondition: UpdatingOrderCondition = {
+        order_id: dataInitial.order_id,
+      };
+
+      try {
+        const orders = new OrdersOperation();
+        const result = await orders.updateImage({ files }, updatingOrderCondition);
+        console.log(result);
+      } catch (error) {
+        // Handle error, show a message, etc.
+        console.error('Error:', error.message);
+      }
+      
+    };
+
+
+    //get img
+    const [images, setImages] = useState<string[]>([]);
+
+    const handleDownloadImages = async () => {
+        try {
+            const orders = new OrdersOperation();
+            const imageUrls = await orders.getImage({ order_id: dataInitial.order_id });
+            setImages(imageUrls);
+        } catch (error) {
+            console.error('Error downloading or processing images:', error.message);
+        }
+    };
+
+
     return (
         <motion.div
             className={`fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-black bg-opacity-10 z-50`}
@@ -156,6 +203,18 @@ const DetailPopup: React.FC<DetailPopupProps> = ({ onClose, dataInitial, reloadD
                     >
                         <IoMdClose className="w-5/6 h-5/6" />
                     </Button>
+                </div>
+                <div>
+                    <form id="imageForm" encType="multipart/form-data" onSubmit={handleSubmit}>
+                        <input type="file" id="imageInput" name="files" multiple onChange={handleFileChange} />
+                        <button type="submit">Upload Images</button>
+                    </form>
+                </div>
+                <div>
+                    <button onClick={handleDownloadImages}>Download Images</button>
+                    {images.map((imageUrl, index) => (
+                        <img key={index} src={imageUrl} alt={`Image ${index}`} />
+                    ))}
                 </div>
                 <div className="h-96 mt-4 relative flex bg-gray-200 bg-clip-border w-full overflow-y-scroll p-4 rounded-sm">
                     <div className="flex flex-col gap-5 w-full">
