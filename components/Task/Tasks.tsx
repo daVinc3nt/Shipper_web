@@ -2,7 +2,7 @@ import classNames from "classnames";
 import React, { useState, useEffect } from "react";
 import { CollapsIcon } from "../Icons";
 import { FormattedMessage, useIntl } from "react-intl";
-import MissionCard from "./MissionCard";
+import MissionCard from "./components/MissionCard";
 import { Dropdown, DropdownTrigger, Button, DropdownMenu, DropdownItem } from "@nextui-org/react";
 import fetchTask from "@/api/getTask";
 

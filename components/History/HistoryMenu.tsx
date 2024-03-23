@@ -7,16 +7,17 @@ const HistoryMenu = () => {
   const [demoPage, setDemoPage] = useState(<LoadingSkeleton />);
 
   useEffect(() => {
-    fetchDemoPage();
+    //@ts-ignore
+    fetchDemoPage(0);
   }, []);
 
-  const fetchDemoPage = async () => {
-    const result = await DemoPage(reloadData);
+  const fetchDemoPage = async ({ option }) => {
+    const result = await DemoPage(reloadData, option);
     setDemoPage(result);
   };
 
-  const reloadData = useCallback(() => {
-    fetchDemoPage();
+  const reloadData = useCallback((option) => {
+    fetchDemoPage(option);
   }, []);
   return (
     <div className="h-[calc(100vh-3rem)] content-center overflow-y-hidden flex flex-col w-full bg-gray-200">

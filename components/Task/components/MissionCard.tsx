@@ -6,10 +6,12 @@ import StatusPopup from "./StatusPopup";
 import DirectPopup from "./DirectPopup";
 import { motion } from "framer-motion";
 import { FormattedMessage } from "react-intl";
+import ImagePopup from "./ImagePopup";
 const MissionCard = ({ data, toggle, keyName, reloadData }) => {
     const [openDetail, setOpenDetail] = useState(false);
     const [openStatus, setOpenStatus] = useState(false);
     const [openDirect, setOpenDirect] = useState(false);
+    const [openImage, setOpenImage] = useState(false);
     return (
         <motion.div
             className={`w-full rounded-lg p-4 relative bg-white shadow-md`}
@@ -21,6 +23,7 @@ const MissionCard = ({ data, toggle, keyName, reloadData }) => {
             {openDetail && <DetailPopup onClose={() => setOpenDetail(false)} dataInitial={data} reloadData={reloadData} />}
             {openStatus && <StatusPopup onClose={() => setOpenStatus(false)} dataInitial={data} reloadData={reloadData} />}
             {openDirect && <DirectPopup onClose={() => setOpenDirect(false)} dataInitial={data} toggle={toggle} />}
+            {openImage && <ImagePopup onClose={() => setOpenImage(false)} dataInitial={data} reloadData={reloadData} />}
             <Dropdown className="z-30">
                 <DropdownTrigger >
                     <Button className={`absolute top-1/2 -translate-y-1/2 right-4 w-4 h-4 rounded-full text-black`} >
@@ -59,6 +62,16 @@ const MissionCard = ({ data, toggle, keyName, reloadData }) => {
                             className="text-center text-black w-full"
                         >
                             <FormattedMessage id="Mission.Direct" />
+                        </Button>
+                    </DropdownItem>
+                    <DropdownItem key="image" textValue="image">
+                        <Button
+                            key="button4"
+                            onClick={() => setOpenImage(true)}
+                            aria-label="dropdownItem1"
+                            className="text-center text-black w-full"
+                        >
+                            Ảnh đơn hàng
                         </Button>
                     </DropdownItem>
                 </DropdownMenu>

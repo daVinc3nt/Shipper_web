@@ -80,7 +80,7 @@ const DirectPopup: React.FC<DirectPopupProps> = ({ onClose, dataInitial, toggle 
         >
             <motion.div
                 ref={notificationRef}
-                className={`relative w-96 bg-white rounded-xl p-4`}
+                className={`relative w-96 bg-white rounded-xl p-3 sm:p-4`}
                 initial={{ scale: 0 }}
                 animate={{ scale: isVisible ? 1 : 0 }}
                 exit={{ scale: 0 }}

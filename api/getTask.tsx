@@ -1,8 +1,4 @@
 import { ShippersOperation } from "@/TDLib/tdlogistics";
-
-interface GettingTasksCondition {
-    option: number,
-}
 const tasks = new ShippersOperation();
 
 export default async function fetchTask(option: number) {

@@ -36,7 +36,7 @@ import FilterAltIcon from "@mui/icons-material/FilterAlt";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  reloadData: () => void;
+  reloadData: (option: number) => void;
 }
 
 export function DataTable<TData, TValue>({
@@ -69,7 +69,7 @@ export function DataTable<TData, TValue>({
   });
 
   useEffect(() => {
-    reloadData();
+    reloadData(selectedOption);
   }, [selectedOption]);
 
   const paginationButtons = [];

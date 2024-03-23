@@ -18,6 +18,7 @@ interface UpdatingOrderInfo {
     width: number,
     length: number,
     COD: number,
+    status_code: number,
 }
 interface DetailPopupProps {
     onClose: () => void;
@@ -82,11 +83,12 @@ const DetailPopup: React.FC<DetailPopupProps> = ({ onClose, dataInitial, reloadD
             const confirmed = window.confirm(intl.formatMessage({ id: 'Mission.Detail.Alert2' }));
             if (confirmed) {
                 let updatingOrderInfo: UpdatingOrderInfo = {
-                    mass: parseFloat(data.mass), //phải chuyển về float không để string
-                    height: parseFloat(data.height), //phải chuyển về float không để string
-                    width: parseFloat(data.width), //phải chuyển về float không để string
-                    length: parseFloat(data.length), //phải chuyển về float không để string
-                    COD: parseFloat(data.COD),  //cho phép gửi COD
+                    mass: parseFloat(data.mass),
+                    height: parseFloat(data.height),
+                    width: parseFloat(data.width),
+                    length: parseFloat(data.length),
+                    COD: parseFloat(data.COD),
+                    status_code: parseFloat(data.status_code)
                 };
 
                 let updatingOrderCondition: UpdatingOrderCondition = {
@@ -95,6 +97,7 @@ const DetailPopup: React.FC<DetailPopupProps> = ({ onClose, dataInitial, reloadD
                 const response = await ordersOperation.update(updatingOrderInfo, updatingOrderCondition);
 
                 if (response.error) {
+                    console.log(response.error)
                     alert(intl.formatMessage({ id: 'Mission.Detail.Alert3' }));
                 } else {
                     reloadData();
@@ -129,7 +132,7 @@ const DetailPopup: React.FC<DetailPopupProps> = ({ onClose, dataInitial, reloadD
 
     return (
         <motion.div
-            className={`fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-black bg-opacity-10 z-50`}
+            className={`fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-black bg-opacity-10 z-50 py-16`}
             initial={{ opacity: 0 }}
             animate={{ opacity: isVisible ? 1 : 0 }}
             exit={{ opacity: 0 }}
@@ -140,24 +143,24 @@ const DetailPopup: React.FC<DetailPopupProps> = ({ onClose, dataInitial, reloadD
         >
             <motion.div
                 ref={notificationRef}
-                className={`relative w-[98%] sm:w-9/12 bg-white rounded-xl p-4`}
+                className={`relative w-[98%] sm:w-9/12 bg-white rounded-xl p-3 sm:p-4 h-full flex flex-col`}
                 initial={{ scale: 0 }}
                 animate={{ scale: isVisible ? 1 : 0 }}
                 exit={{ scale: 0 }}
                 transition={{ duration: 0.5 }}
             >
-                <div className="relative items-center justify-center flex-col flex h-10 w-full border-b-2 border-gray-200 overflow-hidden">
+                <div className="relative items-center justify-center flex-col flex w-full border-b-2 border-gray-200">
                     <div className="font-bold text-lg sm:text-2xl pb-2 w-full text-center">
                         <FormattedMessage id="Mission.Detail.Title" />
                     </div>
                     <Button
-                        className="absolute right-0 w-8 h-8 top-0 rounded-full mb-2 hover:bg-gray-200"
+                        className="absolute right-0 w-8 h-8 top-0 rounded-full pb-1 sm:pb-0 hover:bg-gray-200"
                         onClick={() => onClose()}
                     >
                         <IoMdClose className="w-5/6 h-5/6" />
                     </Button>
                 </div>
-                <div className="h-96 mt-4 relative flex bg-gray-200 bg-clip-border w-full overflow-y-scroll p-4 rounded-sm">
+                <div className="grow mt-4 relative flex bg-gray-200 bg-clip-border w-full overflow-y-scroll p-4 rounded-sm">
                     <div className="flex flex-col gap-5 w-full">
                         <div className="flex">
                             <div className="w-1/2 font-bold text-base"><FormattedMessage id="Mission.Detail.Info1" />:</div>
@@ -274,7 +277,7 @@ const DetailPopup: React.FC<DetailPopupProps> = ({ onClose, dataInitial, reloadD
                     </div>
                 </div>
 
-                <div className="w-full flex">
+                <div className="w-full flex h-16 sm:h-[72px]">
                     {!isEditing ? (
                         <Button
                             className="w-full rounded-lg mt-5 mb-1 py-3 text-[#545e7b] border-[#545e7b] hover:border-green-600 bg-transparent hover:text-white border-2 hover:bg-green-600 hover:shadow-md flex gap-2"
