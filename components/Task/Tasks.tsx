@@ -61,7 +61,7 @@ const Tasks = ({ toggleCollapse, setToggleCollapse }) => {
   }, [toggleCollapse]);
 
   return (
-    <div className="absolute top-0 h-full w-full" key="mission">
+    <div className="absolute top-0 h-full w-full flex" key="mission">
       <div
         className={wrapperClasses}
         style={{
@@ -119,7 +119,7 @@ const Tasks = ({ toggleCollapse, setToggleCollapse }) => {
             </Dropdown>
           </div>
           {!toggleCollapse && !toggleCollapse2 && (
-            <div key="listCard" className="flex flex-col gap-2 relative h-full w-full mt-4 lg:mt-8 border-2 border-gray-200 rounded-md p-2 bg-gray-100">
+            <div key="listCard" className="flex flex-col gap-2 relative h-full w-full mt-4 lg:mt-8 border-2 border-gray-200 rounded-md p-2 bg-gray-100 overflow-y-scroll no-scrollbar">
               {data ? (
                 data.map((data, index) => (
                   <MissionCard

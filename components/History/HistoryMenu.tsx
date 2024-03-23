@@ -5,19 +5,19 @@ import LoadingSkeleton from "../LoadingSkeleton/loadingSkeleton";
 import { FormattedMessage } from "react-intl";
 const HistoryMenu = () => {
   const [demoPage, setDemoPage] = useState(<LoadingSkeleton />);
+  const [option, setOption] = useState(0);
 
   useEffect(() => {
-    //@ts-ignore
-    fetchDemoPage(0);
-  }, []);
+    fetchDemoPage();
+  }, [option]);
 
-  const fetchDemoPage = async ({ option }) => {
+  const fetchDemoPage = async () => {
     const result = await DemoPage(reloadData, option);
     setDemoPage(result);
   };
 
-  const reloadData = useCallback((option) => {
-    fetchDemoPage(option);
+  const reloadData = useCallback((option1) => {
+    setOption(option1);
   }, []);
   return (
     <div className="h-[calc(100vh-3rem)] content-center overflow-y-hidden flex flex-col w-full bg-gray-200">

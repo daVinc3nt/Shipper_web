@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { useCallback, useEffect, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { IoMdClose } from 'react-icons/io'
+import { FormattedMessage } from 'react-intl'
 
 const Dropzone = ({ className, files, setFiles }) => {
     const [rejected, setRejected] = useState([])
@@ -62,26 +63,26 @@ const Dropzone = ({ className, files, setFiles }) => {
                 <div className='flex flex-col items-center justify-center gap-4 px-2'>
                     {/* <ArrowUpTrayIcon className='h-5 w-5 fill-current' /> */}
                     {isDragActive ? (
-                        <p>Drop the files here ...</p>
+                        <p><FormattedMessage id="Mission.AddImage.Drop" /></p>
                     ) : (
-                        <p className='text-center'>Drag & drop files here, or click to select files</p>
+                        <p className='text-center'><FormattedMessage id="Mission.AddImage.Drag" /></p>
                     )}
                 </div>
             </div>
 
             {/* Preview */}
             <section className='mt-5 bg-white p-2 pb-6 rounded-lg shadow-sm'>
-                <h2 className='title text-lg font-semibold whitespace-nowrap w-full text-center'>Xem trước</h2>
+                <h2 className='title text-lg font-semibold whitespace-nowrap w-full text-center'><FormattedMessage id="Mission.AddImage.Preview" /></h2>
 
                 {/* Accepted files */}
                 <div className='flex gap-4 justify-between place-items-center mt-2 px-2'>
-                    <h2 className='title text-md font-semibold whitespace-nowrap'>Ảnh hợp lệ</h2>
+                    <h2 className='title text-md font-semibold whitespace-nowrap'><FormattedMessage id="Mission.AddImage.Preview1" /></h2>
                     <Button
                         type='button'
                         onClick={removeAll}
                         className='mt-1 rounded-md border border-rose-400 px-3 py-1 text-[12px] font-bold uppercase tracking-wider text-red-500 transition-colors hover:bg-rose-400 hover:text-white'
                     >
-                        Xoá tất cả
+                        <FormattedMessage id="Mission.AddImage.Preview2" />
                     </Button>
                 </div>
 

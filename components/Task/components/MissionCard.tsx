@@ -71,7 +71,7 @@ const MissionCard = ({ data, toggle, keyName, reloadData }) => {
                             aria-label="dropdownItem1"
                             className="text-center text-black w-full"
                         >
-                            Ảnh đơn hàng
+                            <FormattedMessage id="Mission.Detail.Info14" />
                         </Button>
                     </DropdownItem>
                 </DropdownMenu>
