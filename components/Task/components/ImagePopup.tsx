@@ -39,6 +39,7 @@ const DetailPopup: React.FC<DetailPopupProps> = ({ onClose, reloadData, dataInit
         if (enable) {
             try {
                 const result = await orders.updateImage(updatingOrderInfo, updatingOrderCondition);
+                setEnable(!enable)
             } catch (error) {
                 console.error('Error:', error.message);
             }
@@ -47,6 +48,7 @@ const DetailPopup: React.FC<DetailPopupProps> = ({ onClose, reloadData, dataInit
     };
 
     useEffect(() => {
+        setEnable(false)
         const fetchImages = async () => {
             if (option !== 0) {
                 try {
@@ -64,7 +66,7 @@ const DetailPopup: React.FC<DetailPopupProps> = ({ onClose, reloadData, dataInit
         };
 
         fetchImages();
-    }, [option, dataInitial.order_id]);
+    }, [option]);
 
     return (
         <motion.div
