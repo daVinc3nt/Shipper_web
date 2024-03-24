@@ -10,6 +10,7 @@ import Carousel from "react-multi-carousel";
 import Image from 'next/image'
 import { TbChevronsRight, TbChevronsLeft } from "react-icons/tb";
 import "react-multi-carousel/lib/styles.css";
+import { MdRadioButtonChecked, MdRadioButtonUnchecked } from "react-icons/md";
 
 interface UpdatingOrderCondition {
     order_id: string,
@@ -35,6 +36,8 @@ const DetailPopup: React.FC<DetailPopupProps> = ({ onClose, dataInitial, reloadD
     const [data, setData] = useState(dataInitial);
     const [isEditing, setIsEditing] = useState(false);
     const [imageUrls, setImageUrls] = useState<string[]>([]);
+    const [imageUrls2, setImageUrls2] = useState<string[]>([]);
+    const [option, setOption] = useState<null | number>(0);
     const [errors, setErrors] = useState({
         height: "",
         length: "",
@@ -123,8 +126,21 @@ const DetailPopup: React.FC<DetailPopupProps> = ({ onClose, dataInitial, reloadD
                 console.error("Error fetching images:", error);
             }
         };
+        const fetchImages2 = async () => {
+            try {
+                const condition: UpdatingOrderImageCondition = {
+                    order_id: dataInitial.order_id,
+                    type: "receive"
+                };
+                const urls2 = await ordersOperation.getImage(condition);
+                setImageUrls2(urls2);
+            } catch (error) {
+                console.error("Error fetching images:", error);
+            }
+        };
 
         fetchImages();
+        fetchImages2();
     }, []);
 
     useEffect(() => {
@@ -182,8 +198,18 @@ const DetailPopup: React.FC<DetailPopupProps> = ({ onClose, dataInitial, reloadD
                 <div className="grow mt-4 relative flex bg-gray-200 bg-clip-border w-full overflow-y-scroll p-4 rounded-sm">
                     <div className="flex flex-col gap-5 w-full">
                         <div className="flex flex-col w-full md:flex-row md:place-items-center">
-                            <div className="w-1/2 font-bold text-base"><FormattedMessage id="Mission.Detail.Info14" />:</div>
-                            {imageUrls && <Carousel
+                            <div className="flex flex-row place-items-center w-full md:w-1/2 justify-center md:justify-start">
+                                <Button className="flex items-center rounded-xl p-2" onClick={() => setOption(0)}>
+                                    {option === 0 ? <MdRadioButtonChecked /> : <MdRadioButtonUnchecked />}
+                                    <span className="pl-1 font-bold text-base"><FormattedMessage id="Mission.AddImage.Button1" /></span>
+                                </Button>
+                                <div className="text-sm text-center px-2">|</div>
+                                <Button className="flex items-center rounded-xl p-2" onClick={() => setOption(1)}>
+                                    {option === 1 ? <MdRadioButtonChecked /> : <MdRadioButtonUnchecked />}
+                                    <span className="pl-1 font-bold text-base"><FormattedMessage id="Mission.AddImage.Button2" /></span>
+                                </Button>
+                            </div>
+                            {imageUrls && option === 0 && <Carousel
                                 additionalTransfrom={0} draggable keyBoardControl
                                 autoPlay
                                 autoPlaySpeed={3000}
@@ -203,6 +229,38 @@ const DetailPopup: React.FC<DetailPopupProps> = ({ onClose, dataInitial, reloadD
                                 transitionDuration={1000}
                             >
                                 {imageUrls.map((url, index) => (
+                                    <div key={index} className='rounded-t-xl px-2'>
+                                        <Image
+                                            src={url}
+                                            alt={`Order Image ${index}`}
+                                            width={100}
+                                            height={100}
+                                            className='h-full w-full rounded-md object-contain'
+                                        />
+                                    </div>
+                                ))}
+                            </Carousel>
+                            }
+                            {imageUrls2 && option === 1 && <Carousel
+                                additionalTransfrom={0} draggable keyBoardControl
+                                autoPlay
+                                autoPlaySpeed={3000}
+                                shouldResetAutoplay={true}
+                                swipeable minimumTouchDrag={80} pauseOnHover
+                                renderArrowsWhenDisabled={false}
+                                renderButtonGroupOutside={false}
+                                renderDotsOutside={false}
+                                responsive={{
+                                    res1: { breakpoint: { max: 550, min: 0 }, items: 1, partialVisibilityGutter: 0 },
+                                    res2: { breakpoint: { max: 3000, min: 550 }, items: 2, partialVisibilityGutter: 0 },
+                                }}
+                                containerClass="h-full w-full md:w-1/2 rounded-2xl mt-2"
+                                rewind={true}
+                                rewindWithAnimation={true}
+                                arrows={false}
+                                transitionDuration={1000}
+                            >
+                                {imageUrls2.map((url, index) => (
                                     <div key={index} className='rounded-t-xl px-2'>
                                         <Image
                                             src={url}
