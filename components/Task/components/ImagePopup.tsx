@@ -40,31 +40,30 @@ const DetailPopup: React.FC<DetailPopupProps> = ({ onClose, reloadData, dataInit
             try {
                 const result = await orders.updateImage(updatingOrderInfo, updatingOrderCondition);
                 setEnable(!enable)
+                fetchImages();
             } catch (error) {
                 console.error('Error:', error.message);
             }
         }
 
     };
-
+    const fetchImages = async () => {
+        if (option !== 0) {
+            try {
+                const condition: UpdatingOrderImageCondition = {
+                    order_id: dataInitial.order_id,
+                    type: option == 1 ? "send" : "receive"
+                };
+                const urls = await orders.getImage(condition);
+                if (urls.length == 2) setEnable(false)
+                else setEnable(true)
+            } catch (error) {
+                console.error("Error fetching images:", error);
+            }
+        }
+    };
     useEffect(() => {
         setEnable(false)
-        const fetchImages = async () => {
-            if (option !== 0) {
-                try {
-                    const condition: UpdatingOrderImageCondition = {
-                        order_id: dataInitial.order_id,
-                        type: option == 1 ? "send" : "receive"
-                    };
-                    const urls = await orders.getImage(condition);
-                    if (urls.length == 2) setEnable(false)
-                    else setEnable(true)
-                } catch (error) {
-                    console.error("Error fetching images:", error);
-                }
-            }
-        };
-
         fetchImages();
     }, [option]);
 
@@ -98,8 +97,8 @@ const DetailPopup: React.FC<DetailPopupProps> = ({ onClose, reloadData, dataInit
                         <IoMdClose className="w-5/6 h-5/6" />
                     </Button>
                 </div>
-                <div className="flex flex-col grow mt-4 gap-2 relative bg-gray-200 bg-clip-border w-full overflow-y-scroll p-4 pt-2 rounded-sm">
-                    <div className="flex w-full flex-col sm:flex-row place-items-center ">
+                <div className="flex flex-col grow mt-4 gap-2 relative bg-gray-200 bg-clip-border w-full p-4 pt-2 rounded-sm">
+                    <div className="flex w-full flex-col sm:flex-row place-items-center bg-white rounded-xl mb-3 p-1">
                         <Button className="flex items-center rounded-xl p-2 w-full" onClick={() => setOption(1)}>
                             {option === 1 ? <MdRadioButtonChecked /> : <MdRadioButtonUnchecked />}
                             <span className="pl-1"><FormattedMessage id="Mission.AddImage.Button1" /></span>

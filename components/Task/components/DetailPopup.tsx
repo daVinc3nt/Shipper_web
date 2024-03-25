@@ -11,6 +11,8 @@ import Image from 'next/image'
 import { TbChevronsRight, TbChevronsLeft } from "react-icons/tb";
 import "react-multi-carousel/lib/styles.css";
 import { MdRadioButtonChecked, MdRadioButtonUnchecked } from "react-icons/md";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import ImageView from "./ImageFull";
 
 interface UpdatingOrderCondition {
     order_id: string,
@@ -44,6 +46,8 @@ const DetailPopup: React.FC<DetailPopupProps> = ({ onClose, dataInitial, reloadD
         width: "",
         mass: "",
     });
+    const [urlState, setUrlState] = useState<null | string>(null)
+    const [openModal, setIsOpenModal] = useState(false)
     const intl = useIntl();
     const ordersOperation = new OrdersOperation();
 
@@ -113,6 +117,32 @@ const DetailPopup: React.FC<DetailPopupProps> = ({ onClose, dataInitial, reloadD
         }
     };
 
+    const CustomDot = ({ onMove, index, onClick, active }: any) => {
+        return (
+            <div className="h-full pb-[12px] flex justify-between">
+                <div
+                    className="text-gray-600"
+                    onClick={() => onClick()}
+                >
+                    {active ? <MdRadioButtonChecked /> : <MdRadioButtonUnchecked />}
+                </div>
+            </div>
+        );
+    };
+
+    const CustomButtonGroup = ({ next, previous }: any) => {
+        return (
+            <div className="w-full h-10 mt-2 flex justify-between">
+                <Button className="left" type="button" onClick={() => previous()}>
+                    <FiChevronLeft className="h-full w-8 text-gray-500" />
+                </Button>
+                <Button className="right" type="button" onClick={() => next()}>
+                    <FiChevronRight className="h-full w-8 text-gray-500" />
+                </Button>
+            </div>
+        );
+    };
+
     useEffect(() => {
         const fetchImages = async () => {
             try {
@@ -165,6 +195,11 @@ const DetailPopup: React.FC<DetailPopupProps> = ({ onClose, dataInitial, reloadD
         }
     };
 
+    const handleOpenImgClick = (url) => {
+        setUrlState(url);
+        setIsOpenModal(true);
+    };
+
     return (
         <motion.div
             className={`fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-black bg-opacity-10 z-50 py-16`}
@@ -176,6 +211,7 @@ const DetailPopup: React.FC<DetailPopupProps> = ({ onClose, dataInitial, reloadD
                 backdropFilter: "blur(6px)",
             }}
         >
+            {openModal && <ImageView url={urlState} onClose={() => setIsOpenModal(false)} />}
             <motion.div
                 ref={notificationRef}
                 className={`relative w-[98%] sm:w-9/12 bg-white rounded-xl p-3 sm:p-4 h-full flex flex-col`}
@@ -195,85 +231,101 @@ const DetailPopup: React.FC<DetailPopupProps> = ({ onClose, dataInitial, reloadD
                         <IoMdClose className="w-5/6 h-5/6" />
                     </Button>
                 </div>
-                <div className="grow mt-4 relative flex bg-gray-200 bg-clip-border w-full overflow-y-scroll p-4 rounded-sm">
-                    <div className="flex flex-col gap-5 w-full">
-                        <div className="flex flex-col w-full md:flex-row md:place-items-center">
-                            <div className="flex flex-row place-items-center w-full md:w-1/2 justify-center md:justify-start">
-                                <Button className="flex items-center rounded-xl p-2" onClick={() => setOption(0)}>
-                                    {option === 0 ? <MdRadioButtonChecked /> : <MdRadioButtonUnchecked />}
-                                    <span className="pl-1 font-bold text-base"><FormattedMessage id="Mission.AddImage.Button1" /></span>
-                                </Button>
-                                <div className="text-sm text-center px-2">|</div>
-                                <Button className="flex items-center rounded-xl p-2" onClick={() => setOption(1)}>
-                                    {option === 1 ? <MdRadioButtonChecked /> : <MdRadioButtonUnchecked />}
-                                    <span className="pl-1 font-bold text-base"><FormattedMessage id="Mission.AddImage.Button2" /></span>
-                                </Button>
-                            </div>
-                            {imageUrls && option === 0 && <Carousel
-                                additionalTransfrom={0} draggable keyBoardControl
-                                autoPlay
-                                autoPlaySpeed={3000}
-                                shouldResetAutoplay={true}
-                                swipeable minimumTouchDrag={80} pauseOnHover
-                                renderArrowsWhenDisabled={false}
-                                renderButtonGroupOutside={false}
-                                renderDotsOutside={false}
-                                responsive={{
-                                    res1: { breakpoint: { max: 550, min: 0 }, items: 1, partialVisibilityGutter: 0 },
-                                    res2: { breakpoint: { max: 3000, min: 550 }, items: 2, partialVisibilityGutter: 0 },
-                                }}
-                                containerClass="h-full w-full md:w-1/2 rounded-2xl mt-2"
-                                rewind={true}
-                                rewindWithAnimation={true}
-                                arrows={false}
-                                transitionDuration={1000}
-                            >
-                                {imageUrls.map((url, index) => (
-                                    <div key={index} className='rounded-t-xl px-2'>
-                                        <Image
-                                            src={url}
-                                            alt={`Order Image ${index}`}
-                                            width={100}
-                                            height={100}
-                                            className='h-full w-full rounded-md object-contain'
-                                        />
-                                    </div>
-                                ))}
-                            </Carousel>
-                            }
-                            {imageUrls2 && option === 1 && <Carousel
-                                additionalTransfrom={0} draggable keyBoardControl
-                                autoPlay
-                                autoPlaySpeed={3000}
-                                shouldResetAutoplay={true}
-                                swipeable minimumTouchDrag={80} pauseOnHover
-                                renderArrowsWhenDisabled={false}
-                                renderButtonGroupOutside={false}
-                                renderDotsOutside={false}
-                                responsive={{
-                                    res1: { breakpoint: { max: 550, min: 0 }, items: 1, partialVisibilityGutter: 0 },
-                                    res2: { breakpoint: { max: 3000, min: 550 }, items: 2, partialVisibilityGutter: 0 },
-                                }}
-                                containerClass="h-full w-full md:w-1/2 rounded-2xl mt-2"
-                                rewind={true}
-                                rewindWithAnimation={true}
-                                arrows={false}
-                                transitionDuration={1000}
-                            >
-                                {imageUrls2.map((url, index) => (
-                                    <div key={index} className='rounded-t-xl px-2'>
-                                        <Image
-                                            src={url}
-                                            alt={`Order Image ${index}`}
-                                            width={100}
-                                            height={100}
-                                            className='h-full w-full rounded-md object-contain'
-                                        />
-                                    </div>
-                                ))}
-                            </Carousel>
-                            }
+                <div className="grow mt-4 relative flex flex-col md:flex-row bg-gray-200 bg-clip-border w-full overflow-y-scroll p-4 px-2 rounded-sm no-scrollbar">
+                    <div className="flex flex-col w-full md:w-1/2 px-2 md:pr-4 mb-4">
+                        <div className="flex flex-col gap-1 place-items-center w-full justify-center ">
+                            <Button className="flex items-center rounded-xl w-full bg-white p-2 border-2 border-gray-300" onClick={() => setOption(0)}>
+                                {option === 0 ? <MdRadioButtonChecked /> : <MdRadioButtonUnchecked />}
+                                <span className="pl-1 font-bold text-base"><FormattedMessage id="Mission.AddImage.Button1" /></span>
+                            </Button>
+                            <Button className="flex items-center rounded-xl w-full bg-white p-2 border-2 border-gray-300" onClick={() => setOption(1)}>
+                                {option === 1 ? <MdRadioButtonChecked /> : <MdRadioButtonUnchecked />}
+                                <span className="pl-1 font-bold text-base"><FormattedMessage id="Mission.AddImage.Button2" /></span>
+                            </Button>
                         </div>
+                        {imageUrls && option === 0 && <div className="relative">
+                            <Carousel
+                                additionalTransfrom={0} draggable keyBoardControl
+                                autoPlay showDots={true}
+                                autoPlaySpeed={3000}
+                                shouldResetAutoplay={true}
+                                swipeable minimumTouchDrag={80} pauseOnHover
+                                renderArrowsWhenDisabled={false}
+                                renderButtonGroupOutside={true}
+                                renderDotsOutside={true}
+                                customDot={<CustomDot />}
+                                customButtonGroup={<CustomButtonGroup />}
+                                responsive={{
+                                    res1: { breakpoint: { max: 40000, min: 0 }, items: 1, partialVisibilityGutter: 0 },
+                                }}
+                                containerClass="w-full h-40 md:h-52 lg:h-96 rounded-2xl mt-2 outline outline-[1px] outline-gray-300 bg-white"
+                                rewind={true}
+                                rewindWithAnimation={true}
+                                arrows={false}
+                                transitionDuration={1000}
+                                dotListClass="flex justify-between gap-1"
+                            >
+                                {imageUrls.length !== 0 ? (
+                                    imageUrls.map((url, index) => (
+                                        <div key={index} className='rounded-t-xl px-2'>
+                                            <Image
+                                                onClick={() => handleOpenImgClick(url)}
+                                                src={url}
+                                                alt={`Order Image ${index}`}
+                                                width={100}
+                                                height={100}
+                                                className='w-full h-40 lg:h-96 rounded-md object-contain'
+                                            />
+                                        </div>
+                                    ))
+                                ) : (
+                                    <div className="flex justify-center text-center">
+                                        <p>No image uploaded</p>
+                                    </div>
+                                )}
+                            </Carousel>
+                        </div>
+                        }
+                        {imageUrls2 && option === 1 && <div className="relative"><Carousel
+                            additionalTransfrom={0} draggable keyBoardControl
+                            autoPlay showDots={true}
+                            autoPlaySpeed={3000}
+                            shouldResetAutoplay={true}
+                            swipeable minimumTouchDrag={80} pauseOnHover
+                            renderArrowsWhenDisabled={false}
+                            renderButtonGroupOutside={true}
+                            renderDotsOutside={true}
+                            customDot={<CustomDot />}
+                            customButtonGroup={<CustomButtonGroup />}
+                            responsive={{
+                                res1: { breakpoint: { max: 40000, min: 0 }, items: 1, partialVisibilityGutter: 0 },
+                            }}
+                            containerClass="w-full h-40 md:h-52 lg:h-96 rounded-2xl mt-2 outline outline-[1px] outline-gray-300 bg-white"
+                            rewind={true}
+                            rewindWithAnimation={true}
+                            arrows={false}
+                            transitionDuration={1000}
+                            dotListClass="flex justify-between gap-1"
+                        >
+                            {imageUrls2.length !== 0 ? (imageUrls2.map((url, index) => (
+                                <div key={index} className='w-full h-40 lg:h-96 rounded-md object-contain'>
+                                    <Image
+                                        onClick={() => handleOpenImgClick(url)}
+                                        src={url}
+                                        alt={`Order Image ${index}`}
+                                        width={100}
+                                        height={100}
+                                        className='h-full w-full rounded-md object-contain'
+                                    />
+                                </div>
+                            ))) : (<div className="flex justify-center text-center">
+                                <p>No image uploaded</p>
+                            </div>)
+                            }
+                        </Carousel></div>
+                        }
+                    </div>
+                    <div className="flex flex-col gap-5 w-full min-h-[660px] h-full bg-white overflow-x-scroll p-4 rounded-xl md:mr-2">
                         <div className="flex">
                             <div className="w-1/2 font-bold text-base"><FormattedMessage id="Mission.Detail.Info1" />:</div>
                             <div className="w-1/2 pl-2">{data.order_id}</div>
@@ -315,7 +367,7 @@ const DetailPopup: React.FC<DetailPopupProps> = ({ onClose, dataInitial, reloadD
                             {isEditing ? (
                                 <div className="relative w-1/2">
                                     <input
-                                        className={`w-full dark:text-[#000000] pl-2 rounded ${errors.mass ? "border-2 border-red-500" : ""}`}
+                                        className={`w-full dark:text-[#000000] pl-2 rounded ${errors.mass ? "border-2 border-red-500" : "border-2 border-blue-500"}`}
                                         type="text"
                                         name="mass"
                                         value={data.mass}
@@ -334,7 +386,7 @@ const DetailPopup: React.FC<DetailPopupProps> = ({ onClose, dataInitial, reloadD
                             {isEditing ? (
                                 <div className="relative w-1/2">
                                     <input
-                                        className={`w-full dark:text-[#000000] pl-2 rounded ${errors.length ? "border-2 border-red-500" : ""}`}
+                                        className={`w-full dark:text-[#000000] pl-2 rounded ${errors.length ? "border-2 border-red-500" : "border-2 border-blue-500"}`}
                                         type="text"
                                         name="length"
                                         value={data.length}
@@ -353,7 +405,7 @@ const DetailPopup: React.FC<DetailPopupProps> = ({ onClose, dataInitial, reloadD
                             {isEditing ? (
                                 <div className="relative w-1/2">
                                     <input
-                                        className={`w-full dark:text-[#000000] pl-2 rounded ${errors.width ? "border-2 border-red-500" : ""}`}
+                                        className={`w-full dark:text-[#000000] pl-2 rounded ${errors.width ? "border-2 border-red-500" : "border-2 border-blue-500"}`}
                                         type="text"
                                         name="width"
                                         value={data.width}
@@ -370,9 +422,9 @@ const DetailPopup: React.FC<DetailPopupProps> = ({ onClose, dataInitial, reloadD
                         <div className={`flex ${errors.width ? "mt-1.5" : ""}`} id="heightInput">
                             <div className="w-1/2 font-bold text-base"><FormattedMessage id="Mission.Detail.Info8" />:</div>
                             {isEditing ? (
-                                <div className="relative w-1/2 mb-2 pb-6">
+                                <div className="relative w-1/2">
                                     <input
-                                        className={`w-full dark:text-[#000000] pl-2 rounded ${errors.height ? "border-2 border-red-500" : ""}`}
+                                        className={`w-full dark:text-[#000000] pl-2 rounded ${errors.height ? "border-2 border-red-500" : "border-2 border-blue-500"}`}
                                         type="text"
                                         name="height"
                                         value={data.height}

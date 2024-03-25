@@ -108,9 +108,9 @@ const DirectPopup: React.FC<DirectPopupProps> = ({ onClose, dataInitial, toggle 
                     </Button>
                 </div>
 
-                <div className="w-full flex">
+                <div className="w-full flex h-16 sm:h-[72px]">
                     <Button
-                        className="w-full rounded-lg mt-5 mb-1 py-3 text-[#545e7b] border-[#545e7b] hover:border-green-600 bg-transparent hover:text-white border-2 hover:bg-green-600 hover:shadow-md flex sm:gap-2"
+                        className="w-full rounded-lg mt-4 sm:mt-5 mb-1 py-3 text-[#545e7b] border-[#545e7b] hover:border-green-600 bg-transparent hover:text-white border-2 hover:bg-green-600 hover:shadow-md flex sm:gap-2"
                         onClick={handleSubmitClick}
                     >
                         <span><FormattedMessage id="Mission.Direct.Button" /></span>

@@ -13,7 +13,7 @@ const Tasks = ({ toggleCollapse, setToggleCollapse }) => {
   const [toggleCollapse2, setToggleCollapse2] = useState(false);
 
   const wrapperClasses = classNames(
-    "relative bottom-0 px-4 pt-10 pb-4 ml-2 lg:ml-4  mt-2 lg:mt-4 bg-formBgColor-parent flex flex-col justify-between rounded-2xl z-20",
+    "relative bottom-0 px-4 pt-10 pb-4 ml-2 lg:ml-4 mt-2 lg:mt-4 bg-formBgColor-parent flex flex-col justify-between rounded-2xl z-20",
     {
       "h-[calc(100%-1rem)] sm:w-[calc(100%-1rem)] lg:h-[calc(100%-2rem)] md:w-4/6 lg:w-7/12 xl:w-[calc(45%)] w-[calc(100%-1rem)]":
         !toggleCollapse,
@@ -84,7 +84,7 @@ const Tasks = ({ toggleCollapse, setToggleCollapse }) => {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu
-                className="bg-white border border-gray-300 no-scrollbar rounded-md w-full max-h-80 overflow-y-auto"
+                className="bg-white border border-gray-300 no-scrollbar rounded-xl shadow w-full max-h-80 overflow-y-auto"
                 aria-labelledby="dropdownMenuButton2"
                 key="dropdownMenuButton2"
               >

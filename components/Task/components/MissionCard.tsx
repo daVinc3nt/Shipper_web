@@ -31,7 +31,7 @@ const MissionCard = ({ data, toggle, keyName, reloadData }) => {
                     </Button>
                 </DropdownTrigger>
                 <DropdownMenu
-                    className="bg-white border border-gray-300 no-scrollbar rounded w-full max-h-80 overflow-y-auto"
+                    className="bg-white border border-gray-300 no-scrollbar rounded-xl shadow-md w-full max-h-80 overflow-y-auto"
                     aria-labelledby="dropdownMenuButton"
                 >
                     <DropdownItem key="detail" textValue="detail">

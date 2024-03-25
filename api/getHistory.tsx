@@ -7,8 +7,7 @@ async function getData(option: number) {
   return data;
 }
 
-export default async function DemoPage(reloadData, option) {
+export default async function DemoPage(reloadData, option, intl) {
   const data = await getData(option);
-
   return <DataTable columns={columns} data={data.data} reloadData={reloadData} />;
 }
