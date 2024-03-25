@@ -12,7 +12,7 @@ const Item: React.FC<MenuItem>  = (menuItems) => {
     <div className="w-full">
     <Link href={menuItems.url}>
     <div
-    className="p-2.5 mt-1 flex items-center rounded-md duration-300 cursor-pointer hover:bg-black hover:text-[#e1201c] "
+    className="p-2.5 mt-1 flex items-center rounded-md duration-300 cursor-pointer hover:bg-[#f8b5b4c3] hover:text-[#e1201c]"
   >
     {menuItems.icon}
     <span className="text-xs lg:text-lg ml-4 font-medium">{menuItems.title}</span>

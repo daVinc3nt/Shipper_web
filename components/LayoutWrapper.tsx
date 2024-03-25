@@ -21,7 +21,7 @@ const Wrapper = ({ children }: LayoutProps) => {
       <SideBar toggleCollapseMobile={toggleCollapseMobile} />
       <div className="flex-1 flex flex-col h-screen ">
         <div className="flex flex-col">
-          <header className="h-14 flex justify-end w-full bg-[#111319] items-center px-4 xl:px-2 border-b border-gray-700">
+          <header className="h-14 flex justify-end w-full bg-red-900 items-center px-4 xl:px-2 ">
             <div className="flex items-center">
               <div className="flex items-center">
                 <div className="flex flex-row gap-2">
@@ -36,7 +36,7 @@ const Wrapper = ({ children }: LayoutProps) => {
         {!toggleCollapseMobile && (
           <div className="lg:hidden flex-1 flex z-40 fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm"></div>
         )}
-        <div className="bg-[#111319] flex flex-1 ">{children}</div>
+        <div className="flex bg-red-800 flex-1 ">{children}</div>
       </div>
     </div>
   );
