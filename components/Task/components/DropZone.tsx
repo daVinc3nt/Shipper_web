@@ -104,7 +104,7 @@ const Dropzone = ({ className, files, setFiles }) => {
                             </div>
                             <button
                                 type='button'
-                                className='absolute right-1 top-1 flex h-7 w-7 items-center justify-center rounded-full hover:bg-gray-300 text-gray-500 hover:text-white'
+                                className='absolute -right-3 -top-3 bg-red-500 pr-.5 flex h-7 w-7 place-items-center justify-center rounded-full hover:bg-gray-300 text-white'
                                 onClick={() => removeFile(file.name)}
                             >
                                 <IoMdClose className='h-5 w-5' />

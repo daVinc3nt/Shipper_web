@@ -113,10 +113,10 @@ export function DataTable<TData, TValue>({
             <Dropdown className="z-30">
               <DropdownTrigger>
                 <Button
-                  className="text-xxs md:text-base border border-gray-600 rounded px-4 text-center h-10"
+                  className="border border-gray-600 rounded px-2 sm:px-4 text-center h-8 sm:h-10"
                   aria-label="Show items per page"
                 >
-                  <span className="text-sm">
+                  <span className="text-xs md:text-base">
                     <FormattedMessage id="Show" />{" "}
                     {table.getState().pagination.pageSize}
                   </span>
@@ -145,7 +145,7 @@ export function DataTable<TData, TValue>({
             </Dropdown>
             <Dropdown className={`z-30`}>
               <DropdownTrigger>
-                <Button className="text-xs md:text-base border h-10 border-gray-600 rounded px-4 text-center" >
+                <Button className="text-xs md:text-base border h-8 sm:h-10 border-gray-600 rounded px-4 text-center" >
                   <span className="bg-white rounded-full font-normal">{intl.formatMessage({ id: `Mission.Filter${selectedOption + 1}` })}</span>
                 </Button>
               </DropdownTrigger>
@@ -247,57 +247,66 @@ export function DataTable<TData, TValue>({
         </Table>
       </div>
 
-      <div className="flex items-center justify-center space-x-2 py-4">
-        <Button
-          variant="light"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-          className="px-2 py-[0.15rem] mb-0.5 w-12 sm:w-16 bg-transparent 
-          drop-shadow-md hover:drop-shadow-xl hover:bg-opacity-20 hover:text-white border border-black hover:bg-black
-          hover:shadow-md md:text-base focus:outline-none font-normal hover:border-white
-          text-black rounded-md text-sm text-center me-2"
-        >
-          <span>
-            <FormattedMessage id="Prev" />
+      <div className="flex flex-col sm:flex-row items-center gap-2 justify-between py-2 sm:py-4">
+        <div className="flex place-items-center">
+          <span className="flex items-center gap-1">
+            <div className="text-xs md:text-base">
+              <FormattedMessage id="Page" />
+            </div>
+            <strong className="text-xs md:text-base whitespace-nowrap">
+              {table.getState().pagination.pageIndex + 1}{" "}
+              <FormattedMessage id="of" /> {table.getPageCount()}
+            </strong>
           </span>
-        </Button>
-        <span className="flex items-center gap-1">
-          <div className="text-xs md:text-base">
-            <FormattedMessage id="Page" />
-          </div>
-          <strong className="text-xs md:text-base whitespace-nowrap">
-            {table.getState().pagination.pageIndex + 1}{" "}
-            <FormattedMessage id="of" /> {table.getPageCount()}
-          </strong>
-        </span>
-        <TbMinusVertical className="text-xl text-gray-700" />
-        <span className="flex items-center gap-1 text-xs md:text-base whitespace-nowrap">
-          <FormattedMessage id="Go to page" />:
-          <input
-            type="number"
-            defaultValue={table.getState().pagination.pageIndex + 1}
-            onChange={(e) => {
-              const page = e.target.value ? Number(e.target.value) - 1 : 0;
-              table.setPageIndex(page);
-            }}
-            className="border border-gray-500 px-1 py-0.5 rounded w-8 sm:w-16 bg-transparent"
-          />
-        </span>
-        <Button
-          variant="light"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-          className="px-2 py-[0.15rem] mb-0.5 w-12 sm:w-16 bg-transparent 
-          drop-shadow-md hover:drop-shadow-xl hover:bg-opacity-20 hover:text-white border border-black hover:bg-black
-          hover:shadow-md md:text-base focus:outline-none font-normal hover:border-white
-          text-black rounded-md text-sm text-center me-2"
-        >
-          <span>
-            <FormattedMessage id="Next" />
+
+          <TbMinusVertical className="text-xl text-gray-700" />
+
+          <span className="flex items-center gap-1 text-xs md:text-base whitespace-nowrap">
+            <FormattedMessage id="Go to page" />:
+            <input
+              type="number"
+              defaultValue={table.getState().pagination.pageIndex + 1}
+              onChange={(e) => {
+                const page = e.target.value ? Number(e.target.value) - 1 : 0;
+                table.setPageIndex(page);
+              }}
+              className="border border-gray-500 px-1 py-0.5 rounded w-8 sm:w-16 bg-transparent"
+            />
           </span>
-        </Button>
+        </div>
+
+        <div className="flex gap-2">
+          <Button
+            variant="light"
+            size="sm"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+            className="px-2 py-[0.15rem] mb-0.5 w-16 bg-transparent 
+    drop-shadow-md hover:drop-shadow-xl hover:bg-opacity-20 hover:text-white border border-black hover:bg-black
+    hover:shadow-md md:text-base focus:outline-none font-normal hover:border-white
+    text-black rounded-md text-sm text-center me-2"
+          >
+            <span>
+              <FormattedMessage id="Prev" />
+            </span>
+          </Button>
+          <Button
+            variant="light"
+            size="sm"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+            className="px-2 py-[0.15rem] mb-0.5 w-16 bg-transparent 
+    drop-shadow-md hover:drop-shadow-xl hover:bg-opacity-20 hover:text-white border border-black hover:bg-black
+    hover:shadow-md md:text-base focus:outline-none font-normal hover:border-white
+    text-black rounded-md text-sm text-center me-2"
+          >
+            <span>
+              <FormattedMessage id="Next" />
+            </span>
+          </Button>
+        </div>
+
+
       </div>
     </div>
   );

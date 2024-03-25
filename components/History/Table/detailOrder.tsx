@@ -15,7 +15,7 @@ const DetailOrder: React.FC<DetailOrderProps> = ({ onClose, dataInitial }) => {
 
   return (
     <motion.div
-      className={`fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-black bg-opacity-10 z-50`}
+      className={`fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-black bg-opacity-10 z-50 py-4`}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -25,7 +25,7 @@ const DetailOrder: React.FC<DetailOrderProps> = ({ onClose, dataInitial }) => {
       }}
     >
       <motion.div
-        className={`relative w-[98%] sm:w-9/12 bg-white rounded-xl p-4`}
+        className={`relative w-[98%] sm:w-9/12 h-full bg-white rounded-xl p-4 flex flex-col`}
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         exit={{ scale: 0 }}
@@ -42,7 +42,7 @@ const DetailOrder: React.FC<DetailOrderProps> = ({ onClose, dataInitial }) => {
             <IoMdClose className="w-5/6 h-5/6" />
           </Button>
         </div>
-        <div className="h-96 mt-4 relative flex bg-gray-200 bg-clip-border w-full overflow-y-scroll p-4 rounded-sm">
+        <div className="mt-4 relative flex bg-gray-200 bg-clip-border w-full overflow-auto h-full p-4 rounded-sm">
           <div className="flex flex-col gap-5 w-full">
             <div className="flex">
               <div className="w-1/2 font-bold text-base"><FormattedMessage id="Mission.Detail.Info1" />:</div>
